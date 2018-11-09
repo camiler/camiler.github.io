@@ -1,0 +1,1248 @@
+<!DOCTYPE html>
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+<html class="theme-next mist use-motion" lang="zh-CN">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=6.5.0" rel="stylesheet" type="text/css" />
+
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-logo.png?v=6.5.0">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-logo.png?v=6.5.0">
+
+
+
+
+
+
+
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Mist',
+    version: '6.5.0',
+    sidebar: {"position":"left","display":"hide","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    fastclick: ,
+    lazyload: ,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+  
+
+
+
+
+  <meta name="description" content="什么是事件循环？事件循环允许Node.js执行非阻塞I/O操作 - 尽管JavaScript是单线程的 - 只要可能就将操作卸载到系统内核。 由于大多数现代内核都是多线程的，他们可以在后台处理多个正在执行的操作。 当其中一个操作完成时，内核会通知Node.js，以便可以将相应的回调添加到轮询队列中得到最终执行。 我们将在本主题后面进一步详细解释这一点。 事件循环解释当Node.js启动时，它就会初">
+<meta name="keywords" content="node">
+<meta property="og:type" content="article">
+<meta property="og:title" content="「翻译」Node.js 事件循环、计时器和process.nextTick()">
+<meta property="og:url" content="http://camiler.github.io/2018/02/28/nodejsevent/index.html">
+<meta property="og:site_name" content="camiler">
+<meta property="og:description" content="什么是事件循环？事件循环允许Node.js执行非阻塞I/O操作 - 尽管JavaScript是单线程的 - 只要可能就将操作卸载到系统内核。 由于大多数现代内核都是多线程的，他们可以在后台处理多个正在执行的操作。 当其中一个操作完成时，内核会通知Node.js，以便可以将相应的回调添加到轮询队列中得到最终执行。 我们将在本主题后面进一步详细解释这一点。 事件循环解释当Node.js启动时，它就会初">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:image" content="http://camiler.github.io/img/IOchart.png">
+<meta property="og:image" content="http://camiler.github.io/img/setTimeout.png">
+<meta property="og:updated_time" content="2018-03-14T06:58:42.056Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="「翻译」Node.js 事件循环、计时器和process.nextTick()">
+<meta name="twitter:description" content="什么是事件循环？事件循环允许Node.js执行非阻塞I/O操作 - 尽管JavaScript是单线程的 - 只要可能就将操作卸载到系统内核。 由于大多数现代内核都是多线程的，他们可以在后台处理多个正在执行的操作。 当其中一个操作完成时，内核会通知Node.js，以便可以将相应的回调添加到轮询队列中得到最终执行。 我们将在本主题后面进一步详细解释这一点。 事件循环解释当Node.js启动时，它就会初">
+<meta name="twitter:image" content="http://camiler.github.io/img/IOchart.png">
+
+
+
+
+
+
+  <link rel="canonical" href="http://camiler.github.io/2018/02/28/nodejsevent/"/>
+
+
+
+<script type="text/javascript" id="page.configurations">
+  CONFIG.page = {
+    sidebar: "",
+  };
+</script>
+
+  <title>「翻译」Node.js 事件循环、计时器和process.nextTick() | camiler</title>
+  
+
+
+
+
+
+
+
+
+
+
+
+  <noscript>
+  <style type="text/css">
+    .use-motion .motion-element,
+    .use-motion .brand,
+    .use-motion .menu-item,
+    .sidebar-inner,
+    .use-motion .post-block,
+    .use-motion .pagination,
+    .use-motion .comments,
+    .use-motion .post-header,
+    .use-motion .post-body,
+    .use-motion .collection-title { opacity: initial; }
+
+    .use-motion .logo,
+    .use-motion .site-title,
+    .use-motion .site-subtitle {
+      opacity: initial;
+      top: initial;
+    }
+
+    .use-motion {
+      .logo-line-before i { left: initial; }
+      .logo-line-after i { right: initial; }
+    }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-CN">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">camiler</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+    
+  </div>
+
+  <div class="site-nav-toggle">
+    <button aria-label="切换导航栏">
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  
+    <ul id="menu" class="menu">
+      
+        
+        
+        
+          
+          <li class="menu-item menu-item-home">
+
+    
+    
+    
+
+    
+
+    <a href="/" rel="section">首页</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-about">
+
+    
+    
+    
+
+    
+
+    <a href="/about/" rel="section">关于</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-categories">
+
+    
+    
+    
+
+    
+
+    <a href="/categories/" rel="section">分类</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-archives">
+
+    
+    
+    
+
+    
+
+    <a href="/archives/" rel="section">归档</a>
+
+  </li>
+
+      
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="javascript:;" class="popup-trigger">
+          
+            搜索</a>
+        </li>
+      
+    </ul>
+  
+
+  
+    
+
+  
+
+  
+    <div class="site-search">
+      
+  <div class="popup search-popup local-search-popup">
+  <div class="local-search-header clearfix">
+    <span class="search-icon">
+      <i class="fa fa-search"></i>
+    </span>
+    <span class="popup-btn-close">
+      <i class="fa fa-times-circle"></i>
+    </span>
+    <div class="local-search-input-wrapper">
+      <input autocomplete="off"
+             placeholder="搜索..." spellcheck="false"
+             type="text" id="local-search-input">
+    </div>
+  </div>
+  <div id="local-search-result"></div>
+</div>
+
+
+
+    </div>
+  
+</nav>
+
+
+
+  
+
+
+
+</div>
+    </header>
+
+    
+
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://camiler.github.io/2018/02/28/nodejsevent/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="camiler lee">
+      <meta itemprop="description" content="一枚患有严重选择综合症的前端学徒">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="camiler">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h2 class="post-title" itemprop="name headline">「翻译」Node.js 事件循环、计时器和process.nextTick()
+              
+            
+          </h2>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+
+            
+            
+            
+
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+
+              
+                
+              
+
+              <time title="创建时间：2018-02-28 09:59:55" itemprop="dateCreated datePublished" datetime="2018-02-28T09:59:55+08:00">2018-02-28</time>
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/FE/" itemprop="url" rel="index"><span itemprop="name">FE</span></a></span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h3 id="什么是事件循环？"><a href="#什么是事件循环？" class="headerlink" title="什么是事件循环？"></a>什么是事件循环？</h3><p>事件循环允许Node.js执行非阻塞I/O操作 - 尽管JavaScript是单线程的 - 只要可能就将操作卸载到系统内核。</p>
+<p>由于大多数现代内核都是多线程的，他们可以在后台处理多个正在执行的操作。 当其中一个操作完成时，内核会通知Node.js，以便可以将相应的回调添加到轮询队列中得到最终执行。 我们将在本主题后面进一步详细解释这一点。</p>
+<h3 id="事件循环解释"><a href="#事件循环解释" class="headerlink" title="事件循环解释"></a>事件循环解释</h3><p>当Node.js启动时，它就会初始事件循环，处理提供的输入脚本（或者进入REPL：Read-Eval-Print-Loop，本文不会提及。），这可能会导致异步API调用，调度定时器或调用<code>process.nextTick()</code>，然后开始处理事件循环。</p>
+<p>下面的图表展示的是一个事件循环的操作顺序的简单概述：<br><figure class="highlight smali"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line">   ┌───────────────────────┐</span><br><span class="line">┌─&gt;│        timers         │</span><br><span class="line">│  └──────────┬────────────┘</span><br><span class="line">│  ┌──────────┴────────────┐</span><br><span class="line">│  │     I/O callbacks     │</span><br><span class="line">│  └──────────┬────────────┘</span><br><span class="line">│  ┌──────────┴────────────┐</span><br><span class="line">│  │     idle, prepare     │</span><br><span class="line">│  └──────────┬────────────┘      ┌───────────────┐</span><br><span class="line">│  ┌──────────┴────────────┐      │   incoming:   │</span><br><span class="line">│  │         poll          │&lt;─────┤  connections, │</span><br><span class="line">│  └──────────┬────────────┘      │   data, etc.  │</span><br><span class="line">│  ┌──────────┴────────────┐      └───────────────┘</span><br><span class="line">│  │       <span class="built_in"> check </span>         │</span><br><span class="line">│  └──────────┬────────────┘</span><br><span class="line">│  ┌──────────┴────────────┐</span><br><span class="line">└──┤    close callbacks    │</span><br><span class="line">   └───────────────────────┘</span><br></pre></td></tr></table></figure></p>
+<p>注意：每个方框将被称为事件循环的一个“阶段”。</p>
+<p>每个阶段有一个要执行的先进先出的回调队列。虽然每个阶段都有其特定的方式，但通常情况下，当事件循环进入给定阶段时，它将执行特定于该阶段的任何操作，然后在该阶段的队列中执行回调，直到队列耗尽或已执行回调的最大数量。当队列耗尽或达到回调限制时，事件循环将移至下一个阶段，依此类推。</p>
+<p>由于这些操作中的任何一个都可以调度更多操作，并且在轮询阶段处理的新事件由内核排队，所以轮询事件可以在轮询事件正在处理时排队。 因此，长时间运行的回调可以使轮询阶段的运行时间远远超过计时器的阈值。 有关更多详细信息，请参阅定时器和轮询部分。</p>
+<p><strong>注意</strong>：Windows和Unix/Linux实现之间略有差异，但对这里的表述不重要。 最重要的部分就在这里。 实际上有七八个步骤，但我们关心的那些 - Node.js实际使用的那些 - 就是上述这些。</p>
+<h3 id="阶段概述"><a href="#阶段概述" class="headerlink" title="阶段概述"></a>阶段概述</h3><ul>
+<li>timers: 这个阶段执行由<code>setTimeout()</code> 和 <code>setInterval()</code> 注册的回调。</li>
+<li>I/O callbacks: 执行几乎所有的回调，除了关闭回调，由定时器注册的回调，和<code>setImmediate()</code></li>
+<li>idle, prepare: 只是内部使用</li>
+<li>poll: 检索新的I/O事件；在占用时节点将会阻塞在这里。</li>
+<li>check: <code>setImmediate()</code>回调会在这里被调用。</li>
+<li>close callbacks: 比如<code>socket.on(&#39;close&#39;, ...)</code>。</li>
+</ul>
+<p>在事件循环的每次运行之间，Node.js会检查它是否正在等待任何异步I/O或定时器，并在没有时清除关闭。</p>
+<h3 id="阶段详解"><a href="#阶段详解" class="headerlink" title="阶段详解"></a>阶段详解</h3><h4 id="计时器"><a href="#计时器" class="headerlink" title="计时器"></a>计时器</h4><p>计时器规定了一个阈值，这个阈值是注册的回调才可能被执行的时间，而不是人们希望执行的确切时间。 定时器回调会尽可能早的在指定的时间过后执行; 但是，操作系统调度或其他回调的运行可能会延迟它们。</p>
+<p><strong>注意</strong>：技术上来讲，当计时器被执行时，poll阶段会进行控制。</p>
+<p>比如：假设你注册了一个延时是在100ms之后调用，然后，你的脚本开始是异步读取一个文件花了95ms:</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> fs = <span class="built_in">require</span>(<span class="string">'fs'</span>);</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">someAsyncOperation</span>(<span class="params">callback</span>) </span>&#123;</span><br><span class="line">  <span class="comment">// Assume this takes 95ms to complete</span></span><br><span class="line">  fs.readFile(<span class="string">'/path/to/file'</span>, callback);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">const</span> timeoutScheduled = <span class="built_in">Date</span>.now();</span><br><span class="line"></span><br><span class="line">setTimeout(<span class="function"><span class="params">()</span> =&gt;</span> &#123;</span><br><span class="line">  <span class="keyword">const</span> delay = <span class="built_in">Date</span>.now() - timeoutScheduled;</span><br><span class="line"></span><br><span class="line">  <span class="built_in">console</span>.log(<span class="string">`<span class="subst">$&#123;delay&#125;</span>ms have passed since I was scheduled`</span>);</span><br><span class="line">&#125;, <span class="number">100</span>);</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment">// do someAsyncOperation which takes 95 ms to complete</span></span><br><span class="line">someAsyncOperation(<span class="function"><span class="params">()</span> =&gt;</span> &#123;</span><br><span class="line">  <span class="keyword">const</span> startCallback = <span class="built_in">Date</span>.now();</span><br><span class="line"></span><br><span class="line">  <span class="comment">// do something that will take 10ms...</span></span><br><span class="line">  <span class="keyword">while</span> (<span class="built_in">Date</span>.now() - startCallback &lt; <span class="number">10</span>) &#123;</span><br><span class="line">    <span class="comment">// do nothing</span></span><br><span class="line">  &#125;</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
+<p>当事件循环进入轮询阶段时，它有一个空队列（<code>fs.readFile()</code>尚未完成），因此它将等待剩余的毫秒数，直到计时器的阈值最早达到。 当等待了95ms后，<code>fs.readFile()</code>完成读取文件，并且需要10ms来完成添加回调到轮询队列并执行的操作。当回调完成时，队列中没有更多的回调了，所以事件循环会看到已经达到最快计时器的阈值，然后回到计时器阶段以执行计时器的回调。在这个例子中，你会看到被调度的定时器和它正在执行的回调之间的总延迟将是105ms。</p>
+<p>注意：为防止轮询阶段时事件循环挨饿空闲，在停止轮询之前，为了执行更多的事件，libuv（实现Node.js事件循环和平台所有异步行为的C库）也有一个硬性最大值（取决于系统）。</p>
+<h4 id="I-O-callbacks"><a href="#I-O-callbacks" class="headerlink" title="I/O callbacks"></a>I/O callbacks</h4><p>此阶段是执行某些系统操作（如TCP错误类型）注册的回调。例如，如果尝试连接时TCP套接字收到ECONNREFUSED，则某些*nix系统要等待报告该错误。这将排队在I/O回调阶段执行。</p>
+<h4 id="poll"><a href="#poll" class="headerlink" title="poll"></a>poll</h4><p>在轮询阶段有两个主要功能：<br>    对阈值已到的定时器执行脚本，然后处理轮询队列中的事件。<br>当事件循环进入轮询阶段并且没有计时器时，会发生以下两件事之一：</p>
+<ul>
+<li>如果轮询队列不为空，则事件循环将遍历其回调队列，同步执行它们，直到队列耗尽或达到系统相关的强制限值。</li>
+<li><p>如果轮询队列为空，则还发生以下两件事之一：</p>
+<ul>
+<li>如果脚本已通过<code>setImmediate()</code>进行了调度，则事件循环将结束轮询阶段并继续执行检查阶段以执行这些被调度的脚本。</li>
+<li>如果脚本没有通过<code>setImmediate()</code>进行调度，则事件循环将等待将回调添加到队列中，然后立即执行它们。</li>
+</ul>
+</li>
+</ul>
+<p>一旦轮询队列为空，事件循环将检查已达到时间阈值的定时器。 如果一个或多个定时器准备就绪，则事件循环将回退到定时器阶段以执行这些定时器的回调。</p>
+<h4 id="check"><a href="#check" class="headerlink" title="check"></a>check</h4><p>此阶段允许在轮询阶段结束后立即执行回调。 如果轮询阶段变得空闲并且脚本已经通过<code>setImmediate()</code>排队，则事件循环可能会继续检查阶段而不是等待。</p>
+<p><code>setImmediate()</code>实际上是一个特殊的定时器，它在事件循环的一个单独的阶段中运行。它使用libuv API来调度回调，以在轮询阶段完成后执行。</p>
+<p>通常，随着代码的执行，事件循环将最终进入轮询阶段，在那里它将等待传入的连接，请求等。但是，如果使用<code>setImmediate()</code>注册了回调并且轮询阶段变为空闲，事件循环将继续进行检查阶段，而不是等待轮询事件。</p>
+<h4 id="close-callbacks"><a href="#close-callbacks" class="headerlink" title="close callbacks"></a>close callbacks</h4><p>如果套接字或句柄突然关闭（<code>例如socket.destroy()</code>），则在此阶段将触发’close’事件。 否则它将通过<code>process.nextTick()</code>触发。</p>
+<h3 id="setImmediate-vs-setTimeout"><a href="#setImmediate-vs-setTimeout" class="headerlink" title="setImmediate() vs setTimeout()"></a><code>setImmediate()</code> vs <code>setTimeout()</code></h3><p><code>setImmediate</code> and <code>setTimeout()</code> 很相似，但其行为方式是不一样的，这取决于它们何时被调用。</p>
+<p><code>setImmediate()</code>用于在当前轮询阶段完成后执行脚本。<br><code>setTimeout()</code>在经过最小阈值（以毫秒为单位）后调度脚本运行。<br>定时器执行的顺序取决于它们被调用的上下文。 如果两者都是在主模块内调用的，那么时序将受到进程性能的限制（可能会受到计算机上运行的其他应用程序的影响）。</p>
+<p>例如，如果我们运行以下不在I/O周期内的脚本（即主模块），则两个定时器的执行顺序是非确定性的，因为它受过程执行的约束：</p>
+<figure class="highlight coffeescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="regexp">//</span> timeout_vs_immediate.js</span><br><span class="line">setTimeout(<span class="function"><span class="params">()</span> =&gt;</span> &#123;</span><br><span class="line">  <span class="built_in">console</span>.log(<span class="string">'timeout'</span>);</span><br><span class="line">&#125;, <span class="number">0</span>);</span><br><span class="line"></span><br><span class="line">setImmediate(<span class="function"><span class="params">()</span> =&gt;</span> &#123;</span><br><span class="line">  <span class="built_in">console</span>.log(<span class="string">'immediate'</span>);</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
+<figure class="highlight crmsh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">$ <span class="keyword">node</span> <span class="title">timeout_vs_immediate</span>.js</span><br><span class="line">timeout</span><br><span class="line">immediate</span><br><span class="line"></span><br><span class="line">$ <span class="keyword">node</span> <span class="title">timeout_vs_immediate</span>.js</span><br><span class="line">immediate</span><br><span class="line">timeout</span><br></pre></td></tr></table></figure>
+<p>但是，如果在I/O周期内移动这两个调用，则立即回调总是首先执行：</p>
+<figure class="highlight coffeescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="regexp">//</span> timeout_vs_immediate.js</span><br><span class="line">const fs = <span class="built_in">require</span>(<span class="string">'fs'</span>);</span><br><span class="line"></span><br><span class="line">fs.readFile(__filename, <span class="function"><span class="params">()</span> =&gt;</span> &#123;</span><br><span class="line">  setTimeout(<span class="function"><span class="params">()</span> =&gt;</span> &#123;</span><br><span class="line">    <span class="built_in">console</span>.log(<span class="string">'timeout'</span>);</span><br><span class="line">  &#125;, <span class="number">0</span>);</span><br><span class="line">  setImmediate(<span class="function"><span class="params">()</span> =&gt;</span> &#123;</span><br><span class="line">    <span class="built_in">console</span>.log(<span class="string">'immediate'</span>);</span><br><span class="line">  &#125;);</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
+<figure class="highlight crmsh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">node</span> <span class="title">timeout_vs_immediate</span>.js</span><br><span class="line">immediate</span><br><span class="line">timeout</span><br><span class="line"></span><br><span class="line"><span class="keyword">node</span> <span class="title">timeout_vs_immediate</span>.js</span><br><span class="line">immediate</span><br><span class="line">timeout</span><br></pre></td></tr></table></figure>
+<p>使用<code>setImmediate()</code>超过<code>setTimeout()</code>的主要优点是: 如果在I/O周期内进行调度，<code>setImmediate()</code>将始终在任何计时器之前被执行，不管当前有多少个计时器。</p>
+<h3 id="process-nextTick"><a href="#process-nextTick" class="headerlink" title="process.nextTick()"></a><code>process.nextTick()</code></h3><h4 id="理解-process-nextTick"><a href="#理解-process-nextTick" class="headerlink" title="理解 process.nextTick()"></a>理解 process.nextTick()</h4><p>您可能已经注意到<code>process.nextTick()</code>没有显示在图中，即使它是异步API的一部分。 这是因为<code>process.nextTick()</code>在技术上并不是事件循环的一部分。 相反，nextTickQueue将在当前操作完成后处理，而不管事件循环处于当前哪个阶段。</p>
+<p>回顾那张图，你在给定的阶段任何时候调用<code>process.nextTick()</code>，所有传递给<code>process.nextTick()</code>的回调都将在事件循环继续之前被解决。 这可能会造成一些不好的情况，因为它允许你通过递归调用<code>process.nextTick()</code>来“饿死”你的I/O，从而阻止事件循环到达轮询阶段。</p>
+<h4 id="为什么可以这样"><a href="#为什么可以这样" class="headerlink" title="为什么可以这样?"></a>为什么可以这样?</h4><p>为什么像这样的东西被包含在Node.js中？ 其中一部分源于它的设计理念就是，即使不需要，API也应该始终是异步的。以此代码为例：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">apiCall</span>(<span class="params">arg, callback</span>) </span>&#123;</span><br><span class="line">  <span class="keyword">if</span> (<span class="keyword">typeof</span> arg !== <span class="string">'string'</span>)</span><br><span class="line">    <span class="keyword">return</span> process.nextTick(callback,</span><br><span class="line">                            <span class="keyword">new</span> <span class="built_in">TypeError</span>(<span class="string">'argument should be string'</span>));</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>代码进行参数检查，如果不正确，它会将错误传递给回调函数。最近更新的API允许将参数传递给<code>process.nextTick()</code>，允许它将回调后传递的任何参数作为参数传播给回调函数，这样就不必嵌套函数了。</p>
+<p>我们正在做的是将错误传递给用户，但只有在我们允许执行用户其余的代码之后。通过使用<code>process.nextTick()</code>，我们就能保证<code>apiCall()</code>总是在剩余代码之后且在允许事件循环继续之前运行其回调。为了达到这个目的，JS调用堆栈允许展开，然后立即执行提供的回调，这样就允许了开发者对<code>process.nextTick()</code>进行递归调用，而不会出现RangeError错误：超出v8的最大调用堆栈大小。</p>
+<p>这种理念会造成一些潜在的困境。看下面的例子：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">let</span> bar;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 这是一个异步签名，但是调用了异步回调</span></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">someAsyncApiCall</span>(<span class="params">callback</span>) </span>&#123; callback(); &#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 在someAsyncApiCall完成之前回调被调用了.</span></span><br><span class="line">someAsyncApiCall(<span class="function"><span class="params">()</span> =&gt;</span> &#123;</span><br><span class="line">  <span class="comment">// 一旦someAsyncApiCall完成, bar不会指向任何值</span></span><br><span class="line">  <span class="built_in">console</span>.log(<span class="string">'bar'</span>, bar); <span class="comment">// undefined</span></span><br><span class="line">&#125;);</span><br><span class="line"></span><br><span class="line">bar = <span class="number">1</span>;</span><br></pre></td></tr></table></figure>
+<p>用户定义<code>someAsyncApiCall()</code>具有异步签名，但它实际上是同步运行的。当它被调用时，提供给<code>someAsyncApiCall()</code>的回调将在事件循环的相同阶段被调用，因为<code>someAsyncApiCall()</code>实际上并不会异步执行任何操作。 因此，回调会尝试引用<code>bar</code>，即使它在作用域中可能没有该变量，因为该脚本无法运行到完成状态。</p>
+<p>通过将回调放置在<code>process.nextTick()</code>中，脚本仍然具有运行到完成的能力，允许在调用回调之前对所有变量，函数等进行初始化。 它还具有不允许事件循环继续的优点。 在事件循环被允许继续之前，告知用户出错了可能是有用的。这是前一个使用<code>process.nextTick()</code>的示例：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">let</span> bar;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">someAsyncApiCall</span>(<span class="params">callback</span>) </span>&#123;</span><br><span class="line">  process.nextTick(callback);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">someAsyncApiCall(<span class="function"><span class="params">()</span> =&gt;</span> &#123;</span><br><span class="line">  <span class="built_in">console</span>.log(<span class="string">'bar'</span>, bar); <span class="comment">// 1</span></span><br><span class="line">&#125;);</span><br><span class="line"></span><br><span class="line">bar = <span class="number">1</span>;</span><br></pre></td></tr></table></figure>
+<p>这里是个真实的例子:</p>
+<figure class="highlight coffeescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">const server = net.createServer(<span class="function"><span class="params">()</span> =&gt;</span> &#123;&#125;).listen(<span class="number">8080</span>);</span><br><span class="line"></span><br><span class="line">server.<span class="literal">on</span>(<span class="string">'listening'</span>, <span class="function"><span class="params">()</span> =&gt;</span> &#123;&#125;);</span><br></pre></td></tr></table></figure>
+<p>当只有一个端口被传递时，该端口被立即绑定。 所以，’listening’回调可以立即被调用。 问题是<code>.on（&#39;listening&#39;）</code>回调不会在那个时候设置。</p>
+<p>为了解决这个问题，’listening’事件在<code>nextTick()</code>中排队等待脚本运行完成。 这允许用户设置他们想要的任何事件处理程序。</p>
+<h3 id="process-nextTick-vs-setImmediate"><a href="#process-nextTick-vs-setImmediate" class="headerlink" title="process.nextTick() vs setImmediate()"></a>process.nextTick() vs setImmediate()</h3><p>正如用户担心的，这里有两个方法很相似，但他们的名称有点让人困惑。</p>
+<p><code>process.nextTick()</code>在同一阶段立即触发<br><code>setImmediate()</code>触发后面的迭代或者事件循环的“tick”<br>实质上，名称应该交换一下。 <code>process.nextTick()</code>比<code>setImmediate()</code>更快立即触发，但这是过去的人为因素，不太可能改变。修改这个转换会使npm上大部分包垮掉。 每天都有更多的新模块被添加，这意味着我们每多等一天，就会发生更多潜在损害。虽然他们很让人混淆，但名字本身不会改变。</p>
+<p>我们建议开发者在所有情况都使用<code>setImmediate()</code>，因为这更容易理解。（而且使得代码在更多环境中兼容，比如浏览器JS中。）</p>
+<h3 id="为什么使用-process-nextTick"><a href="#为什么使用-process-nextTick" class="headerlink" title="为什么使用 process.nextTick()?"></a>为什么使用 process.nextTick()?</h3><p>有两个主要原因：</p>
+<p>1、允许用户处理错误，清理任何不需要的资源，或者可能在事件循环继续之前再次尝试请求</p>
+<p>2、有时需要在调用堆栈解除之后但事件循环继续之前允许回调运行。</p>
+<p>下面这个简单的例子就符合用户期望：<br><figure class="highlight coffeescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">const server = net.createServer();</span><br><span class="line">server.<span class="literal">on</span>(<span class="string">'connection'</span>, <span class="function"><span class="params">(conn)</span> =&gt;</span> &#123; &#125;);</span><br><span class="line"></span><br><span class="line">server.listen(<span class="number">8080</span>);</span><br><span class="line">server.<span class="literal">on</span>(<span class="string">'listening'</span>, <span class="function"><span class="params">()</span> =&gt;</span> &#123; &#125;);</span><br></pre></td></tr></table></figure></p>
+<p>假设<code>listen()</code>在事件循环的开始处运行，但监听<code>listening</code>的回调放置在<code>setImmediate()</code>中。 除非传递主机名，否则绑定到端口将立即发生。要继续进行事件循环，它必须进入轮询阶段，这意味着收到连接并非不可能，从而允许在监听事件之前触发连接事件。</p>
+<p>另一个例子就是运行一个函数的构造器，假设该构造函数继承于<code>EventEmitter</code>，并且在构造函数中想调用一个事件：</p>
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> EventEmitter = <span class="built_in">require</span>(<span class="string">'events'</span>);</span><br><span class="line"><span class="keyword">const</span> util = <span class="built_in">require</span>(<span class="string">'util'</span>);</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">MyEmitter</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">  EventEmitter.call(<span class="keyword">this</span>);</span><br><span class="line">  <span class="keyword">this</span>.emit(<span class="string">'event'</span>);</span><br><span class="line">&#125;</span><br><span class="line">util.inherits(MyEmitter, EventEmitter);</span><br><span class="line"></span><br><span class="line"><span class="keyword">const</span> myEmitter = <span class="keyword">new</span> MyEmitter();</span><br><span class="line">myEmitter.on(<span class="string">'event'</span>, <span class="function"><span class="params">()</span> =&gt;</span> &#123;</span><br><span class="line">  <span class="built_in">console</span>.log(<span class="string">'an event occurred!'</span>);</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
+<p>你不能从构造函数中立即触发事件，因为脚本不会处理到用户为该事件指定回调的位置。 因此，在构造函数本身中，可以使用<code>process.nextTick()</code>来设置回调，以在构造函数完成后触发事件，从而提供预期的结果：</p>
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> EventEmitter = <span class="built_in">require</span>(<span class="string">'events'</span>);</span><br><span class="line"><span class="keyword">const</span> util = <span class="built_in">require</span>(<span class="string">'util'</span>);</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">MyEmitter</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">  EventEmitter.call(<span class="keyword">this</span>);</span><br><span class="line"></span><br><span class="line">  <span class="comment">// use nextTick to emit the event once a handler is assigned</span></span><br><span class="line">  process.nextTick(<span class="function"><span class="params">()</span> =&gt;</span> &#123;</span><br><span class="line">    <span class="keyword">this</span>.emit(<span class="string">'event'</span>);</span><br><span class="line">  &#125;);</span><br><span class="line">&#125;</span><br><span class="line">util.inherits(MyEmitter, EventEmitter);</span><br><span class="line"></span><br><span class="line"><span class="keyword">const</span> myEmitter = <span class="keyword">new</span> MyEmitter();</span><br><span class="line">myEmitter.on(<span class="string">'event'</span>, <span class="function"><span class="params">()</span> =&gt;</span> &#123;</span><br><span class="line">  <span class="built_in">console</span>.log(<span class="string">'an event occurred!'</span>);</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
+<p><a href="https://nodejs.org/en/docs/guides/event-loop-timers-and-nexttick/" target="_blank" rel="noopener">查看原文</a></p>
+<h3 id="译者补充"><a href="#译者补充" class="headerlink" title="译者补充"></a>译者补充</h3><p>1、node的核心思想就是异步，异步的实现是基于一个C库–libuv，这个库其实是又一层封装，针对windows和*nix两种系统进行了不同的处理。<br>2、Node的I/O异步<br>    I/O操作主要包括http请求，文件读取等。下图就是整个异步I/O流程：</p>
+<p><img src="/img/IOchart.png" alt="io-chart"></p>
+<p>这里有三个概念：请求对象，IO观察者，IOCP，线程池。IOCP，是Windows的内核对象，*nix是通过其他方法模拟实现。以下摘自<a href="https://zh.wikipedia.org/wiki/IOCP" target="_blank" rel="noopener">wikipedia</a>:</p>
+<blockquote>
+<p>输入输出完成端口（Input/Output Completion Port，IOCP）, 是支持多个同时发生的异步I/O操作的应用程序编程接口。</p>
+<p>原理：通常的办法是，线程池中的工作线程的数量与CPU内核数量相同，以此来最小化线程切换代价。一个IOCP对象，在操作系统中可关联着多个Socket和（或）文件控制端。 IOCP对象内部有一个先进先出（FIFO）队列，用于存放IOCP所关联的输入输出端的服务请求完成消息。请求输入输出服务的进程不接收IO服务完成通知，而是检查IOCP的消息队列以确定IO请求的状态。 （线程池中的）多个线程负责从IOCP消息队列中取走完成通知并执行数据处理；如果队列中没有消息，那么线程阻塞挂起在该队列。这些现成从而实现了负载均衡。</p>
+</blockquote>
+<p>3、Node的非I/O异步<br>非I/O的异步操作包括：<code>setTimeout()</code>, <code>setInterval()</code>, <code>process.nextTick()</code>, <code>setImmediate()</code>。</p>
+<p>以setTimeout()行为为例：</p>
+<p><img src="/img/setTimeout.png" alt="settimeout"></p>
+<p>结合译文中那张时间循环阶段图，I/O的异步是在I/O callbacks阶段，<code>setTimeout()</code>和<code>setInterval()</code>是在timer阶段，事件循环中每一次循环会经过那几个阶段，在I/O callbacks阶段中主要是I/O观察者接收通知获取其回调函数及请求结果，然后在此阶段执行回调函数。timer阶段主要是检查由定时器放入的handles是否到达时间，从而执行回调。</p>
+<p>对于<code>process.nextTick()</code>和<code>setImmediate()</code>， 前者是idle观察者，后者是check观察者，在每一次循环中，idle观察者先于I/O观察者，I/O观察者先于check观察者。同时，<code>process.nextTick()</code>的回调保存在一个数组中，每次循环会将数组中的回调全部执行完，而<code>setImmediate()</code>的回调保存在链表中，每次循环只执行链表中的一个回调节点。</p>
+<p>执行顺序实例：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> fs = <span class="built_in">require</span>(<span class="string">'fs'</span>);</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">someAsyncOperation</span>(<span class="params">callback</span>) </span>&#123;</span><br><span class="line">  <span class="comment">// Assume this takes 95ms to complete</span></span><br><span class="line">  <span class="keyword">const</span> startCallback = <span class="built_in">Date</span>.now();</span><br><span class="line">  fs.readFile(<span class="string">'/koa.js'</span>, () =&gt; &#123;</span><br><span class="line">    <span class="built_in">console</span>.log(<span class="string">`<span class="subst">$&#123;<span class="built_in">Date</span>.now() - startCallback&#125;</span>ms readfile`</span>);</span><br><span class="line">  &#125;);</span><br><span class="line">  callback();</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">const</span> timeoutScheduled = <span class="built_in">Date</span>.now();</span><br><span class="line"></span><br><span class="line">setTimeout(<span class="function"><span class="params">()</span> =&gt;</span> &#123;</span><br><span class="line">  <span class="keyword">const</span> delay = <span class="built_in">Date</span>.now() - timeoutScheduled;</span><br><span class="line"></span><br><span class="line">  <span class="built_in">console</span>.log(<span class="string">`<span class="subst">$&#123;delay&#125;</span>ms have passed since I was scheduled`</span>);</span><br><span class="line">&#125;, <span class="number">100</span>);</span><br><span class="line"></span><br><span class="line">process.nextTick(<span class="function"><span class="params">()</span> =&gt;</span> &#123;</span><br><span class="line">  <span class="built_in">console</span>.log(<span class="string">'next tick1'</span>);</span><br><span class="line">&#125;);</span><br><span class="line"></span><br><span class="line">process.nextTick(<span class="function"><span class="params">()</span> =&gt;</span> &#123;</span><br><span class="line">  <span class="built_in">console</span>.log(<span class="string">'next tick2'</span>);</span><br><span class="line">&#125;);</span><br><span class="line"></span><br><span class="line">someAsyncOperation(<span class="function"><span class="params">()</span> =&gt;</span> &#123;</span><br><span class="line">  setImmediate(<span class="function"><span class="params">()</span> =&gt;</span> &#123;</span><br><span class="line">    <span class="built_in">console</span>.log(<span class="string">'setImmediate'</span>);</span><br><span class="line">    process.nextTick(<span class="function"><span class="params">()</span> =&gt;</span> &#123;</span><br><span class="line">      <span class="built_in">console</span>.log(<span class="string">'next tick'</span>);</span><br><span class="line">    &#125;)</span><br><span class="line">  &#125;);</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
+<p>运行结果：</p>
+<figure class="highlight vim"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">next</span> tick1</span><br><span class="line"><span class="keyword">next</span> tick2</span><br><span class="line"><span class="number">2</span>ms <span class="built_in">readfile</span></span><br><span class="line">setImmediate</span><br><span class="line"><span class="keyword">next</span> tick</span><br><span class="line"><span class="number">103</span>ms have passed since I was scheduled</span><br></pre></td></tr></table></figure>
+
+      
+    </div>
+
+    
+
+    
+    
+    
+
+    
+
+    
+       
+    
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/node/" rel="tag"># node</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2018/01/31/ten-years/" rel="next" title="我的十年">
+                <i class="fa fa-chevron-left"></i> 我的十年
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2018/04/17/iterator-generator/" rel="prev" title="迭代器、生成器">
+                迭代器、生成器 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+  </div>
+
+
+          </div>
+          
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <p class="site-author-name" itemprop="name">camiler lee</p>
+              <p class="site-description motion-element" itemprop="description">一枚患有严重选择综合症的前端学徒</p>
+          </div>
+
+          
+
+          
+
+          
+            <div class="links-of-author motion-element">
+              
+                <span class="links-of-author-item">
+                  
+                  
+                    
+                  
+                  
+                    
+                  
+                  <a href="https://github.com/camiler" title="GitHub &rarr; https://github.com/camiler" rel="noopener" target="_blank"><i class="fa fa-fw fa-github"></i>GitHub</a>
+                </span>
+              
+                <span class="links-of-author-item">
+                  
+                  
+                    
+                  
+                  
+                    
+                  
+                  <a href="mailto:liyue_suc@163.com" title="E-Mail &rarr; mailto:liyue_suc@163.com" rel="noopener" target="_blank"><i class="fa fa-fw fa-globe"></i>E-Mail</a>
+                </span>
+              
+                <span class="links-of-author-item">
+                  
+                  
+                    
+                  
+                  
+                    
+                  
+                  <a href="http://www.zcfy.cc/column/@camiler" title="翻译 &rarr; http://www.zcfy.cc/column/@camiler" rel="noopener" target="_blank"><i class="fa fa-fw fa-globe"></i>翻译</a>
+                </span>
+              
+            </div>
+          
+
+          
+
+          
+          
+
+          
+            
+          
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#什么是事件循环？"><span class="nav-number">1.</span> <span class="nav-text">什么是事件循环？</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#事件循环解释"><span class="nav-number">2.</span> <span class="nav-text">事件循环解释</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#阶段概述"><span class="nav-number">3.</span> <span class="nav-text">阶段概述</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#阶段详解"><span class="nav-number">4.</span> <span class="nav-text">阶段详解</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#计时器"><span class="nav-number">4.1.</span> <span class="nav-text">计时器</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#I-O-callbacks"><span class="nav-number">4.2.</span> <span class="nav-text">I/O callbacks</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#poll"><span class="nav-number">4.3.</span> <span class="nav-text">poll</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#check"><span class="nav-number">4.4.</span> <span class="nav-text">check</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#close-callbacks"><span class="nav-number">4.5.</span> <span class="nav-text">close callbacks</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#setImmediate-vs-setTimeout"><span class="nav-number">5.</span> <span class="nav-text">setImmediate() vs setTimeout()</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#process-nextTick"><span class="nav-number">6.</span> <span class="nav-text">process.nextTick()</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#理解-process-nextTick"><span class="nav-number">6.1.</span> <span class="nav-text">理解 process.nextTick()</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#为什么可以这样"><span class="nav-number">6.2.</span> <span class="nav-text">为什么可以这样?</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#process-nextTick-vs-setImmediate"><span class="nav-number">7.</span> <span class="nav-text">process.nextTick() vs setImmediate()</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#为什么使用-process-nextTick"><span class="nav-number">8.</span> <span class="nav-text">为什么使用 process.nextTick()?</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#译者补充"><span class="nav-number">9.</span> <span class="nav-text">译者补充</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2018</span>
+  <span class="with-love" id="animate">
+    <i class="fa fa-"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">camiler lee</span>
+
+  
+
+  
+</div>
+
+
+
+
+
+
+
+
+
+        
+<div class="busuanzi-count">
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+  
+
+  
+</div>
+
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+	
+    
+
+    
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=6.5.0"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=6.5.0"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=6.5.0"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=6.5.0"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=6.5.0"></script>
+
+
+
+  
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+  
+
+  <script type="text/javascript">
+    // Popup Window;
+    var isfetched = false;
+    var isXml = true;
+    // Search DB path;
+    var search_path = "search.xml";
+    if (search_path.length === 0) {
+      search_path = "search.xml";
+    } else if (/json$/i.test(search_path)) {
+      isXml = false;
+    }
+    var path = "/" + search_path;
+    // monitor main search box;
+
+    var onPopupClose = function (e) {
+      $('.popup').hide();
+      $('#local-search-input').val('');
+      $('.search-result-list').remove();
+      $('#no-result').remove();
+      $(".local-search-pop-overlay").remove();
+      $('body').css('overflow', '');
+    }
+
+    function proceedsearch() {
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay"></div>')
+        .css('overflow', 'hidden');
+      $('.search-popup-overlay').click(onPopupClose);
+      $('.popup').toggle();
+      var $localSearchInput = $('#local-search-input');
+      $localSearchInput.attr("autocapitalize", "none");
+      $localSearchInput.attr("autocorrect", "off");
+      $localSearchInput.focus();
+    }
+
+    // search function;
+    var searchFunc = function(path, search_id, content_id) {
+      'use strict';
+
+      // start loading animation
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay">' +
+          '<div id="search-loading-icon">' +
+          '<i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>' +
+          '</div>' +
+          '</div>')
+        .css('overflow', 'hidden');
+      $("#search-loading-icon").css('margin', '20% auto 0 auto').css('text-align', 'center');
+
+      
+
+      $.ajax({
+        url: path,
+        dataType: isXml ? "xml" : "json",
+        async: true,
+        success: function(res) {
+          // get the contents from search data
+          isfetched = true;
+          $('.popup').detach().appendTo('.header-inner');
+          var datas = isXml ? $("entry", res).map(function() {
+            return {
+              title: $("title", this).text(),
+              content: $("content",this).text(),
+              url: $("url" , this).text()
+            };
+          }).get() : res;
+          var input = document.getElementById(search_id);
+          var resultContent = document.getElementById(content_id);
+          var inputEventFunction = function() {
+            var searchText = input.value.trim().toLowerCase();
+            var keywords = searchText.split(/[\s\-]+/);
+            if (keywords.length > 1) {
+              keywords.push(searchText);
+            }
+            var resultItems = [];
+            if (searchText.length > 0) {
+              // perform local searching
+              datas.forEach(function(data) {
+                var isMatch = false;
+                var hitCount = 0;
+                var searchTextCount = 0;
+                var title = data.title.trim();
+                var titleInLowerCase = title.toLowerCase();
+                var content = data.content.trim().replace(/<[^>]+>/g,"");
+                
+                var contentInLowerCase = content.toLowerCase();
+                var articleUrl = decodeURIComponent(data.url);
+                var indexOfTitle = [];
+                var indexOfContent = [];
+                // only match articles with not empty titles
+                if(title != '') {
+                  keywords.forEach(function(keyword) {
+                    function getIndexByWord(word, text, caseSensitive) {
+                      var wordLen = word.length;
+                      if (wordLen === 0) {
+                        return [];
+                      }
+                      var startPosition = 0, position = [], index = [];
+                      if (!caseSensitive) {
+                        text = text.toLowerCase();
+                        word = word.toLowerCase();
+                      }
+                      while ((position = text.indexOf(word, startPosition)) > -1) {
+                        index.push({position: position, word: word});
+                        startPosition = position + wordLen;
+                      }
+                      return index;
+                    }
+
+                    indexOfTitle = indexOfTitle.concat(getIndexByWord(keyword, titleInLowerCase, false));
+                    indexOfContent = indexOfContent.concat(getIndexByWord(keyword, contentInLowerCase, false));
+                  });
+                  if (indexOfTitle.length > 0 || indexOfContent.length > 0) {
+                    isMatch = true;
+                    hitCount = indexOfTitle.length + indexOfContent.length;
+                  }
+                }
+
+                // show search results
+
+                if (isMatch) {
+                  // sort index by position of keyword
+
+                  [indexOfTitle, indexOfContent].forEach(function (index) {
+                    index.sort(function (itemLeft, itemRight) {
+                      if (itemRight.position !== itemLeft.position) {
+                        return itemRight.position - itemLeft.position;
+                      } else {
+                        return itemLeft.word.length - itemRight.word.length;
+                      }
+                    });
+                  });
+
+                  // merge hits into slices
+
+                  function mergeIntoSlice(text, start, end, index) {
+                    var item = index[index.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    var hits = [];
+                    var searchTextCountInSlice = 0;
+                    while (position + word.length <= end && index.length != 0) {
+                      if (word === searchText) {
+                        searchTextCountInSlice++;
+                      }
+                      hits.push({position: position, length: word.length});
+                      var wordEnd = position + word.length;
+
+                      // move to next position of hit
+
+                      index.pop();
+                      while (index.length != 0) {
+                        item = index[index.length - 1];
+                        position = item.position;
+                        word = item.word;
+                        if (wordEnd > position) {
+                          index.pop();
+                        } else {
+                          break;
+                        }
+                      }
+                    }
+                    searchTextCount += searchTextCountInSlice;
+                    return {
+                      hits: hits,
+                      start: start,
+                      end: end,
+                      searchTextCount: searchTextCountInSlice
+                    };
+                  }
+
+                  var slicesOfTitle = [];
+                  if (indexOfTitle.length != 0) {
+                    slicesOfTitle.push(mergeIntoSlice(title, 0, title.length, indexOfTitle));
+                  }
+
+                  var slicesOfContent = [];
+                  while (indexOfContent.length != 0) {
+                    var item = indexOfContent[indexOfContent.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    // cut out 100 characters
+                    var start = position - 20;
+                    var end = position + 80;
+                    if(start < 0){
+                      start = 0;
+                    }
+                    if (end < position + word.length) {
+                      end = position + word.length;
+                    }
+                    if(end > content.length){
+                      end = content.length;
+                    }
+                    slicesOfContent.push(mergeIntoSlice(content, start, end, indexOfContent));
+                  }
+
+                  // sort slices in content by search text's count and hits' count
+
+                  slicesOfContent.sort(function (sliceLeft, sliceRight) {
+                    if (sliceLeft.searchTextCount !== sliceRight.searchTextCount) {
+                      return sliceRight.searchTextCount - sliceLeft.searchTextCount;
+                    } else if (sliceLeft.hits.length !== sliceRight.hits.length) {
+                      return sliceRight.hits.length - sliceLeft.hits.length;
+                    } else {
+                      return sliceLeft.start - sliceRight.start;
+                    }
+                  });
+
+                  // select top N slices in content
+
+                  var upperBound = parseInt('1');
+                  if (upperBound >= 0) {
+                    slicesOfContent = slicesOfContent.slice(0, upperBound);
+                  }
+
+                  // highlight title and content
+
+                  function highlightKeyword(text, slice) {
+                    var result = '';
+                    var prevEnd = slice.start;
+                    slice.hits.forEach(function (hit) {
+                      result += text.substring(prevEnd, hit.position);
+                      var end = hit.position + hit.length;
+                      result += '<b class="search-keyword">' + text.substring(hit.position, end) + '</b>';
+                      prevEnd = end;
+                    });
+                    result += text.substring(prevEnd, slice.end);
+                    return result;
+                  }
+
+                  var resultItem = '';
+
+                  if (slicesOfTitle.length != 0) {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + highlightKeyword(title, slicesOfTitle[0]) + "</a>";
+                  } else {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + title + "</a>";
+                  }
+
+                  slicesOfContent.forEach(function (slice) {
+                    resultItem += "<a href='" + articleUrl + "'>" +
+                      "<p class=\"search-result\">" + highlightKeyword(content, slice) +
+                      "...</p>" + "</a>";
+                  });
+
+                  resultItem += "</li>";
+                  resultItems.push({
+                    item: resultItem,
+                    searchTextCount: searchTextCount,
+                    hitCount: hitCount,
+                    id: resultItems.length
+                  });
+                }
+              })
+            };
+            if (keywords.length === 1 && keywords[0] === "") {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-search fa-5x" /></div>'
+            } else if (resultItems.length === 0) {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-frown-o fa-5x" /></div>'
+            } else {
+              resultItems.sort(function (resultLeft, resultRight) {
+                if (resultLeft.searchTextCount !== resultRight.searchTextCount) {
+                  return resultRight.searchTextCount - resultLeft.searchTextCount;
+                } else if (resultLeft.hitCount !== resultRight.hitCount) {
+                  return resultRight.hitCount - resultLeft.hitCount;
+                } else {
+                  return resultRight.id - resultLeft.id;
+                }
+              });
+              var searchResultList = '<ul class=\"search-result-list\">';
+              resultItems.forEach(function (result) {
+                searchResultList += result.item;
+              })
+              searchResultList += "</ul>";
+              resultContent.innerHTML = searchResultList;
+            }
+          }
+
+          if ('auto' === 'manual') {
+            input.addEventListener('input', inputEventFunction);
+          } else {
+            $('.search-icon').click(inputEventFunction);
+            input.addEventListener('keypress', function (event) {
+              if (event.keyCode === 13) {
+                inputEventFunction();
+              }
+            });
+          }
+
+          // remove loading animation
+          $(".local-search-pop-overlay").remove();
+          $('body').css('overflow', '');
+
+          proceedsearch();
+        }
+      });
+    }
+
+    // handle and trigger popup window;
+    $('.popup-trigger').click(function(e) {
+      e.stopPropagation();
+      if (isfetched === false) {
+        searchFunc(path, 'local-search-input', 'local-search-result');
+      } else {
+        proceedsearch();
+      };
+    });
+
+    $('.popup-btn-close').click(onPopupClose);
+    $('.popup').click(function(e){
+      e.stopPropagation();
+    });
+    $(document).on('keyup', function (event) {
+      var shouldDismissSearchPopup = event.which === 27 &&
+        $('.search-popup').is(':visible');
+      if (shouldDismissSearchPopup) {
+        onPopupClose();
+      }
+    });
+  </script>
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>

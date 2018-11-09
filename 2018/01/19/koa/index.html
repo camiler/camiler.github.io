@@ -1,0 +1,1251 @@
+<!DOCTYPE html>
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+<html class="theme-next mist use-motion" lang="zh-CN">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=6.5.0" rel="stylesheet" type="text/css" />
+
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-logo.png?v=6.5.0">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-logo.png?v=6.5.0">
+
+
+
+
+
+
+
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Mist',
+    version: '6.5.0',
+    sidebar: {"position":"left","display":"hide","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    fastclick: ,
+    lazyload: ,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+  
+
+
+
+
+  <meta name="description" content="简介Koa是由Express的原班人马打造的新一代web框架，针对web应用和APIs，旨在成为一个更小，更生动，更强壮的基础框架。借助生成器，Koa可以让你不再受回调的困扰，还大幅度提高了错误处理能力。同时，核心不会集成任何中间件，提供了一套更优雅的方法，使我们写服务端代码更快速更加享受。  Koa2 Vs Express设计哲学上的不同1、Koa: 为了解决并替换node，Express：增强">
+<meta name="keywords" content="koa">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Koa2">
+<meta property="og:url" content="http://camiler.github.io/2018/01/19/koa/index.html">
+<meta property="og:site_name" content="camiler">
+<meta property="og:description" content="简介Koa是由Express的原班人马打造的新一代web框架，针对web应用和APIs，旨在成为一个更小，更生动，更强壮的基础框架。借助生成器，Koa可以让你不再受回调的困扰，还大幅度提高了错误处理能力。同时，核心不会集成任何中间件，提供了一套更优雅的方法，使我们写服务端代码更快速更加享受。  Koa2 Vs Express设计哲学上的不同1、Koa: 为了解决并替换node，Express：增强">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:image" content="http://camiler.github.io/img/koa.gif">
+<meta property="og:image" content="http://camiler.github.io/img/koause.png">
+<meta property="og:updated_time" content="2018-02-28T02:01:49.579Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Koa2">
+<meta name="twitter:description" content="简介Koa是由Express的原班人马打造的新一代web框架，针对web应用和APIs，旨在成为一个更小，更生动，更强壮的基础框架。借助生成器，Koa可以让你不再受回调的困扰，还大幅度提高了错误处理能力。同时，核心不会集成任何中间件，提供了一套更优雅的方法，使我们写服务端代码更快速更加享受。  Koa2 Vs Express设计哲学上的不同1、Koa: 为了解决并替换node，Express：增强">
+<meta name="twitter:image" content="http://camiler.github.io/img/koa.gif">
+
+
+
+
+
+
+  <link rel="canonical" href="http://camiler.github.io/2018/01/19/koa/"/>
+
+
+
+<script type="text/javascript" id="page.configurations">
+  CONFIG.page = {
+    sidebar: "",
+  };
+</script>
+
+  <title>Koa2 | camiler</title>
+  
+
+
+
+
+
+
+
+
+
+
+
+  <noscript>
+  <style type="text/css">
+    .use-motion .motion-element,
+    .use-motion .brand,
+    .use-motion .menu-item,
+    .sidebar-inner,
+    .use-motion .post-block,
+    .use-motion .pagination,
+    .use-motion .comments,
+    .use-motion .post-header,
+    .use-motion .post-body,
+    .use-motion .collection-title { opacity: initial; }
+
+    .use-motion .logo,
+    .use-motion .site-title,
+    .use-motion .site-subtitle {
+      opacity: initial;
+      top: initial;
+    }
+
+    .use-motion {
+      .logo-line-before i { left: initial; }
+      .logo-line-after i { right: initial; }
+    }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-CN">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">camiler</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+    
+  </div>
+
+  <div class="site-nav-toggle">
+    <button aria-label="切换导航栏">
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  
+    <ul id="menu" class="menu">
+      
+        
+        
+        
+          
+          <li class="menu-item menu-item-home">
+
+    
+    
+    
+
+    
+
+    <a href="/" rel="section">首页</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-about">
+
+    
+    
+    
+
+    
+
+    <a href="/about/" rel="section">关于</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-categories">
+
+    
+    
+    
+
+    
+
+    <a href="/categories/" rel="section">分类</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-archives">
+
+    
+    
+    
+
+    
+
+    <a href="/archives/" rel="section">归档</a>
+
+  </li>
+
+      
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="javascript:;" class="popup-trigger">
+          
+            搜索</a>
+        </li>
+      
+    </ul>
+  
+
+  
+    
+
+  
+
+  
+    <div class="site-search">
+      
+  <div class="popup search-popup local-search-popup">
+  <div class="local-search-header clearfix">
+    <span class="search-icon">
+      <i class="fa fa-search"></i>
+    </span>
+    <span class="popup-btn-close">
+      <i class="fa fa-times-circle"></i>
+    </span>
+    <div class="local-search-input-wrapper">
+      <input autocomplete="off"
+             placeholder="搜索..." spellcheck="false"
+             type="text" id="local-search-input">
+    </div>
+  </div>
+  <div id="local-search-result"></div>
+</div>
+
+
+
+    </div>
+  
+</nav>
+
+
+
+  
+
+
+
+</div>
+    </header>
+
+    
+
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://camiler.github.io/2018/01/19/koa/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="camiler lee">
+      <meta itemprop="description" content="一枚患有严重选择综合症的前端学徒">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="camiler">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h2 class="post-title" itemprop="name headline">Koa2
+              
+            
+          </h2>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+
+            
+            
+            
+
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+
+              
+                
+              
+
+              <time title="创建时间：2018-01-19 17:27:09" itemprop="dateCreated datePublished" datetime="2018-01-19T17:27:09+08:00">2018-01-19</time>
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/FE/" itemprop="url" rel="index"><span itemprop="name">FE</span></a></span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h2 id="简介"><a href="#简介" class="headerlink" title="简介"></a>简介</h2><p>Koa是由Express的原班人马打造的新一代web框架，针对web应用和APIs，旨在成为一个更小，更生动，更强壮的基础框架。借助生成器，Koa可以让你不再受回调的困扰，还大幅度提高了错误处理能力。同时，核心不会集成任何中间件，提供了一套更优雅的方法，使我们写服务端代码更快速更加享受。 </p>
+<h2 id="Koa2-Vs-Express"><a href="#Koa2-Vs-Express" class="headerlink" title="Koa2 Vs Express"></a>Koa2 Vs Express</h2><h3 id="设计哲学上的不同"><a href="#设计哲学上的不同" class="headerlink" title="设计哲学上的不同"></a>设计哲学上的不同</h3><p>1、Koa: 为了解决并替换node，Express：增强了node<br>2、Koa使用promise和async来避免回调地狱，使错误处理简单化。暴露它本身的<code>ctx.request</code>和<code>ctx.response</code>对象，而非node的<code>req</code>和<code>res</code>对象。 Express增强了node的<code>req</code>和<code>res</code>对象，添加额外的属性和方法，一级包含了一些其他的”框架”特征，比如路由和模板。但Koa没有这样做。<br>3、Koa可以被视为是node<code>http</code>模块的抽象，但Express是一个针对node的完整的应用框架。</p>
+<table>
+<thead>
+<tr>
+<th style="text-align:right">Feature</th>
+<th style="text-align:center">Koa</th>
+<th style="text-align:center">Express</th>
+<th style="text-align:center">Connect</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:right">Middleware Kernel</td>
+<td style="text-align:center">✓</td>
+<td style="text-align:center">✓</td>
+<td style="text-align:center">✓</td>
+</tr>
+<tr>
+<td style="text-align:right">Routing</td>
+<td style="text-align:center"></td>
+<td style="text-align:center">✓</td>
+<td style="text-align:center"></td>
+</tr>
+<tr>
+<td style="text-align:right">Templating</td>
+<td style="text-align:center"></td>
+<td style="text-align:center">✓</td>
+<td style="text-align:center"></td>
+</tr>
+<tr>
+<td style="text-align:right">Sending Files</td>
+<td style="text-align:center"></td>
+<td style="text-align:center">✓</td>
+<td style="text-align:center"></td>
+</tr>
+<tr>
+<td style="text-align:right">JSONP</td>
+<td style="text-align:center"></td>
+<td style="text-align:center">✓</td>
+<td style="text-align:center"></td>
+</tr>
+</tbody>
+</table>
+<h3 id="Express原理浅析"><a href="#Express原理浅析" class="headerlink" title="Express原理浅析"></a>Express原理浅析</h3><p>我们先只用node的http模块启动一个服务，监听3000端口，以及几个路由：</p>
+<figure class="highlight arduino"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> http = require(<span class="string">'http'</span>);</span><br><span class="line">http.createServer((req, res, next) =&gt; &#123;</span><br><span class="line">  <span class="built_in">if</span> (req.url === <span class="string">'/'</span>) &#123;</span><br><span class="line">    res.writeHead(<span class="number">200</span>, &#123; <span class="string">"Content-Type"</span>: <span class="string">"text/html"</span> &#125;);</span><br><span class="line">    res.<span class="built_in">end</span>(<span class="string">"Welcome to the homepage!"</span>);</span><br><span class="line">  &#125; <span class="built_in">else</span> <span class="built_in">if</span> (req.url == <span class="string">"/about"</span>) &#123;</span><br><span class="line">    res.writeHead(<span class="number">200</span>, &#123; <span class="string">"Content-Type"</span>: <span class="string">"text/html"</span> &#125;);</span><br><span class="line">    res.<span class="built_in">end</span>(<span class="string">"Welcome to the about page!"</span>);</span><br><span class="line">  &#125; <span class="built_in">else</span> &#123;</span><br><span class="line">    res.writeHead(<span class="number">404</span>, &#123; <span class="string">"Content-Type"</span>: <span class="string">"text/plain"</span> &#125;);</span><br><span class="line">    res.<span class="built_in">end</span>(<span class="string">"404 error! File not found."</span>);</span><br><span class="line">  &#125;</span><br><span class="line">&#125;).<span class="built_in">listen</span>(<span class="number">3000</span>);</span><br></pre></td></tr></table></figure>
+<p>以上代码的意思是我们启动了一个3000端口的服务，并注册了回调函数，回调函数接收req, res, next三个返回值。当在浏览器输入localhost:3000后，回调函数才会执行。   </p>
+<p>用express之后，createServer中入参回调函数就换成了下面一个express的app实例：</p>
+<figure class="highlight stata"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> <span class="keyword">app</span> = express();</span><br><span class="line"><span class="keyword">app</span>.<span class="keyword">set</span>('views', path.join(__dirname, 'views'));</span><br><span class="line"><span class="keyword">app</span>.<span class="keyword">set</span>('<span class="keyword">view</span> engine', 'hbs');</span><br><span class="line"><span class="keyword">app</span>.<span class="keyword">use</span>(cookieParser());</span><br><span class="line"><span class="keyword">app</span>.<span class="keyword">use</span>('/api', checkLoginStatus, apiRouter);</span><br><span class="line"></span><br><span class="line"><span class="keyword">const</span> pageRouter = express.Router();</span><br><span class="line">pageRouter.<span class="built_in">get</span>('/page', (req, res, next) =&gt; &#123;res.rendder('page', page)&#125;);</span><br><span class="line"><span class="keyword">app</span>.<span class="keyword">use</span>('/page', pageRouter);</span><br><span class="line"></span><br><span class="line"><span class="comment">// 处理没有URL匹配的中间件</span></span><br><span class="line"><span class="keyword">app</span>.<span class="keyword">use</span>((req, res, next) =&gt; &#123;</span><br><span class="line">  <span class="comment">//不处理 map 和 json 格式的数据</span></span><br><span class="line">  <span class="keyword">if</span> (/\.(map|json)$/.<span class="keyword">test</span>(req.url)) &#123;</span><br><span class="line">    <span class="keyword">return</span> next();</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">const</span> <span class="keyword">err</span> = new <span class="keyword">Error</span>(`<span class="variable">$&#123;req</span>.url&#125;,Not Found`);</span><br><span class="line">  <span class="keyword">err</span>.status = 404;</span><br><span class="line">  next(<span class="keyword">err</span>);</span><br><span class="line">&#125;);</span><br><span class="line"></span><br><span class="line"><span class="comment">// 所有错误处理，这里就是最后一个中间件处理了</span></span><br><span class="line"><span class="keyword">app</span>.<span class="keyword">use</span>((<span class="keyword">err</span>, req, res, next) =&gt; &#123;</span><br><span class="line">  res.status(<span class="keyword">err</span>.status || 500);</span><br><span class="line">  res.render('<span class="keyword">error</span>', &#123;</span><br><span class="line">    layout: false,</span><br><span class="line">    title: '<span class="keyword">Error</span>',</span><br><span class="line">    message: <span class="keyword">err</span>.message,</span><br><span class="line">    <span class="keyword">error</span>: <span class="keyword">err</span></span><br><span class="line">  &#125;);</span><br><span class="line">&#125;);</span><br><span class="line"></span><br><span class="line">http.createServer(<span class="keyword">app</span>).listen(3000);</span><br></pre></td></tr></table></figure>
+<p>app使用每一层中间件来处理请求，可以看到通过app.use的方式处理的是应用级别的，比如开始的一些模板cookie等的设置，应用的访问结构（一级访问路径），最后的容错处理等。每一层中间件可以是路由级别的中间件，也可以是个过滤器，拦截器等等。每个请求都会从上到下走一遍，有的中间件是检查权限，有的根据它再获取一些新东西再加到它身上，可能有的让它next()，继续去下一个中间件，有的一拍即合就直接res.render或者res.json，那么这个请求就完成了它的使命，不会再继续往下走了。   </p>
+<p>按照使用方法，我们逐条对着源码看看express做了什么。   </p>
+<p>首先是<code>var app = express()</code> 这句声明。</p>
+<p><strong>主入口express.js</strong> </p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> EventEmitter = <span class="built_in">require</span>(<span class="string">'events'</span>).EventEmitter;</span><br><span class="line"><span class="keyword">var</span> proto = <span class="built_in">require</span>(<span class="string">'./application'</span>);</span><br><span class="line"><span class="keyword">var</span> req = <span class="built_in">require</span>(<span class="string">'./request'</span>);</span><br><span class="line"><span class="keyword">var</span> res = <span class="built_in">require</span>(<span class="string">'./response'</span>);</span><br><span class="line"></span><br><span class="line">exports = <span class="built_in">module</span>.exports = createApplication;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">createApplication</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">  <span class="comment">// 定义 app 字面量函数</span></span><br><span class="line">  <span class="keyword">var</span> app = <span class="function"><span class="keyword">function</span>(<span class="params">req, res, next</span>) </span>&#123;</span><br><span class="line">    app.handle(req, res, next);</span><br><span class="line">  &#125;;</span><br><span class="line">  <span class="comment">// defines EventEmitter.prototype's descriptors on app if app does not have a descriptor by the same name</span></span><br><span class="line">  mixin(app, EventEmitter.prototype, <span class="literal">false</span>);</span><br><span class="line">  mixin(app, proto, <span class="literal">false</span>);</span><br><span class="line">  <span class="comment">// expose the prototype that will get set on requests</span></span><br><span class="line">  app.request = <span class="built_in">Object</span>.create(req, &#123;</span><br><span class="line">    app: &#123; <span class="attr">configurable</span>: <span class="literal">true</span>, <span class="attr">enumerable</span>: <span class="literal">true</span>, <span class="attr">writable</span>: <span class="literal">true</span>, <span class="attr">value</span>: app &#125;</span><br><span class="line">  &#125;)</span><br><span class="line"></span><br><span class="line">  <span class="comment">// expose the prototype that will get set on responses</span></span><br><span class="line">  app.response = <span class="built_in">Object</span>.create(res, &#123;</span><br><span class="line">    app: &#123; <span class="attr">configurable</span>: <span class="literal">true</span>, <span class="attr">enumerable</span>: <span class="literal">true</span>, <span class="attr">writable</span>: <span class="literal">true</span>, <span class="attr">value</span>: app &#125;</span><br><span class="line">  &#125;)</span><br><span class="line">  <span class="built_in">console</span>.log(app.response.app.response === app.response); </span><br><span class="line">  app.init();</span><br><span class="line">  <span class="keyword">return</span> app;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p><code>var app = express()</code>这句调用得到的app就是<code>createApplication</code>方法中返回的app。app是个函数，并将node的req, res, next传给了app内部handle方法，赋予handle对于内部对象的控制权。注意这里只是注册handle处理函数，并没有执行。<br>关于以上有一个疑问：<code>app.response</code>和<code>app.request</code>的原型上要暴露app？而app.response.app.response === app.response 执行结果也是true。<br>可以看到，这里app对象里面也暴露了node events模块的方法，除此之外，在这个主文件中还暴露了封装的Route，Router，还有以下几个中间件：   </p>
+<figure class="highlight delphi"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">exports</span>.json = bodyParser.json</span><br><span class="line"><span class="keyword">exports</span>.query = require(<span class="string">'./middleware/query'</span>);</span><br><span class="line"><span class="keyword">exports</span>.<span class="keyword">static</span> = require(<span class="string">'serve-static'</span>);</span><br><span class="line"><span class="keyword">exports</span>.urlencoded = bodyParser.urlencoded</span><br></pre></td></tr></table></figure>
+<p>然后主入口里面还有这句函数调用：<code>app.init()</code>, 在init中设置了一系列私有变量以及配置项。毕竟在正式开始前，都需要配置一些默认参数。 至此，主入口文件大致搞清楚了。</p>
+<p>接下来我们看看启动服务监听端口的声明：<code>app.listen(3000)</code></p>
+<figure class="highlight routeros"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">app.listen = function listen() &#123;</span><br><span class="line">  var<span class="built_in"> server </span>= http.createServer(this);</span><br><span class="line">  return server.listen.apply(server, arguments);</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+<p>这里其实就是执行了<code>http.createServer(app).listen(3000)</code>。</p>
+<p><strong>app.use</strong></p>
+<p>重点来了，源码中有大部分是对参数的处理，从最上面的使用代码也可以看到app.use的参数形式多样，总得需要一些判断校验处理，所以省略这些，贴出源码中真正处理的部分：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line">app.use = <span class="function"><span class="keyword">function</span> <span class="title">use</span>(<span class="params">fn</span>) </span>&#123;</span><br><span class="line">  <span class="comment">// 这里还有一些处理</span></span><br><span class="line">  <span class="comment">// fns得到所有调用app.use中的函数数组</span></span><br><span class="line">  <span class="keyword">var</span> fns = flatten(slice.call(<span class="built_in">arguments</span>, offset));</span><br><span class="line">  <span class="comment">// setup router</span></span><br><span class="line">  <span class="keyword">this</span>.lazyrouter();</span><br><span class="line">  <span class="keyword">var</span> router = <span class="keyword">this</span>._router;</span><br><span class="line"></span><br><span class="line">  fns.forEach(<span class="function"><span class="keyword">function</span> (<span class="params">fn</span>) </span>&#123;</span><br><span class="line">    <span class="comment">// non-express app</span></span><br><span class="line">    <span class="keyword">if</span> (!fn || !fn.handle || !fn.set) &#123;</span><br><span class="line">      <span class="keyword">return</span> router.use(path, fn);</span><br><span class="line">    &#125;</span><br><span class="line">	 <span class="comment">// 这里处理：如果fn本身有handle或set方法，app就会恢复到出厂设置。</span></span><br><span class="line">	 <span class="comment">// 基本上就是执行app.use(express());才会走到这里</span></span><br><span class="line">  &#125;, <span class="keyword">this</span>);</span><br><span class="line"></span><br><span class="line">  <span class="keyword">return</span> <span class="keyword">this</span>;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+<p>以<code>app.use(&#39;/&#39;, (req, res) =&gt; {res.send(&#39;hello world&#39;)})</code>调用为例，最终就是执行:<br><code>router.use(&#39;/&#39;, (req, res) =&gt; {res.send(&#39;hello world&#39;)})</code></p>
+<p><strong>router.use</strong></p>
+<p>同样省去那些校验判断取核心：</p>
+<figure class="highlight actionscript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> layer = <span class="keyword">new</span> Layer(path, &#123;</span><br><span class="line">  sensitive: <span class="keyword">this</span>.caseSensitive,</span><br><span class="line">  strict: <span class="literal">false</span>,</span><br><span class="line">  end: <span class="literal">false</span></span><br><span class="line">&#125;, fn);</span><br><span class="line"></span><br><span class="line">layer.route = <span class="literal">undefined</span>;</span><br><span class="line"></span><br><span class="line"><span class="keyword">this</span>.stack.push(layer);</span><br></pre></td></tr></table></figure>
+<p>调用router.use就会new一个Layer，这个Layer就是一个类，声明如下：<br><figure class="highlight actionscript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">Layer</span><span class="params">(path, options, fn)</span> </span>&#123;</span><br><span class="line">  <span class="keyword">if</span> (!(<span class="keyword">this</span> <span class="keyword">instanceof</span> Layer)) &#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="keyword">new</span> Layer(path, options, fn);</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">this</span>.handle = fn;</span><br><span class="line">  <span class="comment">// 还有一些属性设置  </span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>例子带入之后就是Layer.handle = pageRouter; 这样每一次app.use都会通过这样创建一个层，可以看做是 express 在启动运行的时候，注册好了一个中间件函数栈stack，里面堆叠好了待被调用的中间层，<strong>一旦请求进来，就会执行回调函数，即正式调用app, 也就是<code>app()</code>, app.handle开始执行：</strong></p>
+<p><strong>app.handle</strong></p>
+<figure class="highlight kotlin"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">app.handle = function handle(req, res, callback) &#123;</span><br><span class="line">  <span class="keyword">var</span> router = <span class="keyword">this</span>._router;</span><br><span class="line">  <span class="comment">// final handler</span></span><br><span class="line">  <span class="keyword">var</span> done = callback || finalhandler(req, res, &#123;</span><br><span class="line">    env: <span class="keyword">this</span>.<span class="keyword">get</span>(<span class="string">'env'</span>),</span><br><span class="line">    onerror: logerror.bind(<span class="keyword">this</span>)</span><br><span class="line">  &#125;);</span><br><span class="line">  router.handle(req, res, done);</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+<p>app.handle又把node服务回调里的三个参数，继续分派给了 express 的核心路由模块。</p>
+<p><strong>router.handle</strong></p>
+<figure class="highlight lua"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line">proto.handle = <span class="function"><span class="keyword">function</span> <span class="title">handle</span><span class="params">(req, res, out)</span></span> &#123;</span><br><span class="line">  <span class="built_in">next</span>();</span><br><span class="line">  <span class="function"><span class="keyword">function</span> <span class="title">next</span><span class="params">(err)</span></span> &#123;</span><br><span class="line">    var layer;</span><br><span class="line">    var route;</span><br><span class="line">    // process_params是处理中间层参数的方法</span><br><span class="line">    self.process_params(layer, paramcalled, req, res, <span class="function"><span class="keyword">function</span> <span class="params">(err)</span></span> &#123;</span><br><span class="line">      <span class="keyword">if</span> (route) &#123;</span><br><span class="line">        <span class="keyword">return</span> layer.handle_request(req, res, <span class="built_in">next</span>);</span><br><span class="line">      &#125;</span><br><span class="line"></span><br><span class="line">      trim_prefix(layer, layerError, layerPath, <span class="built_in">path</span>);</span><br><span class="line">    &#125;);</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="function"><span class="keyword">function</span> <span class="title">trim_prefix</span><span class="params">(layer, layerError, layerPath, path)</span></span> &#123;</span><br><span class="line">    <span class="keyword">if</span> (layerError) &#123;</span><br><span class="line">      layer.handle_error(layerError, req, res, <span class="built_in">next</span>);</span><br><span class="line">    &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">      layer.handle_request(req, res, <span class="built_in">next</span>);</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+<p>按照helloworld的例子，以上最终走向layer.handle_request(req, res, next)。</p>
+<p><strong>layer.handle_request</strong></p>
+<figure class="highlight actionscript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">Layer.prototype.handle_request = <span class="function"><span class="keyword">function</span> <span class="title">handle</span><span class="params">(req, res, next)</span> </span>&#123;</span><br><span class="line">  <span class="keyword">var</span> fn = <span class="keyword">this</span>.handle;  </span><br><span class="line">  <span class="comment">/*</span></span><br><span class="line"><span class="comment">   *this.handle就是(req, res) =&gt; &#123;res.send('hello world')&#125;</span></span><br><span class="line"><span class="comment">   */</span></span><br><span class="line">  <span class="keyword">if</span> (fn.length &gt; <span class="number">3</span>) &#123;</span><br><span class="line">    <span class="comment">// not a standard request handler</span></span><br><span class="line">    <span class="keyword">return</span> next();</span><br><span class="line">  &#125;</span><br><span class="line">  </span><br><span class="line">  <span class="keyword">try</span> &#123;</span><br><span class="line">    fn(req, res, next); <span class="comment">//执行了res.send('hello world')</span></span><br><span class="line">  &#125; <span class="keyword">catch</span> (err) &#123;</span><br><span class="line">    next(err);</span><br><span class="line">  &#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+<p>似乎过程通了，当事件触发时，在express启动时注册的回调函数开始一层一层过滤执行。有点不太清楚为什么要这样通过app.handle =&gt; router.handle =&gt; layer.handle注册回调函数，或许express目的就是做一个完整的应用框架，需要更多的扩展，需要应用级别的层次感，更多的属性以应对各种各样的web应用请求。毕竟大牛们的脑回路是普通人没法比的。如果没有express，我们的node服务估计就是一大串的<code>switch-case</code> 或者<code>if-else</code>，无法想象了！   </p>
+<h3 id="Koa2"><a href="#Koa2" class="headerlink" title="Koa2"></a>Koa2</h3><p>先看一个例子：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> Koa = <span class="built_in">require</span>(<span class="string">'koa'</span>);</span><br><span class="line"><span class="keyword">const</span> app = <span class="keyword">new</span> Koa();</span><br><span class="line"></span><br><span class="line"><span class="keyword">const</span> indent = <span class="function">(<span class="params">n</span>) =&gt;</span> <span class="keyword">new</span> <span class="built_in">Array</span>(n).join(<span class="string">' '</span>)</span><br><span class="line"></span><br><span class="line">app.use(<span class="keyword">async</span> (ctx, next) =&gt; &#123;</span><br><span class="line">  ctx.body = <span class="string">`&lt;h3&gt;请求 =&gt; 第一层中间件&lt;/h3&gt;`</span></span><br><span class="line">  <span class="keyword">await</span> next()</span><br><span class="line">  ctx.body += <span class="string">`&lt;h3&gt;响应 &lt;= 第一层中间件&lt;/h3&gt;`</span></span><br><span class="line">&#125;)</span><br><span class="line">app.use(<span class="keyword">async</span> (ctx, next) =&gt; &#123;</span><br><span class="line">  ctx.body += <span class="string">`&lt;h3&gt;<span class="subst">$&#123;indent(<span class="number">4</span>)&#125;</span>请求 =&gt; 第二层中间件&lt;/h3&gt;`</span></span><br><span class="line">  <span class="keyword">await</span> next()</span><br><span class="line">  ctx.body += <span class="string">`&lt;h3&gt;<span class="subst">$&#123;indent(<span class="number">4</span>)&#125;</span>响应 &lt;= 第二层中间件&lt;/h3&gt;`</span></span><br><span class="line">&#125;)</span><br><span class="line">app.use(<span class="keyword">async</span> (ctx, next) =&gt; &#123;</span><br><span class="line">  ctx.body += <span class="string">`&lt;p style="color: #f60"&gt;<span class="subst">$&#123;indent(<span class="number">12</span>)&#125;</span>=&gt; Koa 核心 处理业务 &lt;=&lt;/p&gt;`</span></span><br><span class="line">&#125;)</span><br><span class="line"></span><br><span class="line">app.listen(<span class="number">3000</span>);</span><br></pre></td></tr></table></figure>
+<p>和Express一样，new一个Koa的实例app,中间件也是通过app.use传递，也是通过app.listen(3000)启动服务监听3000端口，但和Express不同的是，app.listen的实现是这样：<br><code>http.createServer(app.callback()).listen(3000)</code><br>Koa传入的是实例的callback方法，而express传入的是app本身。</p>
+<p><strong>app.use</strong></p>
+<figure class="highlight gauss"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">use</span>(<span class="function"><span class="keyword">fn</span>) &#123;</span></span><br><span class="line"><span class="function">  this.middleware.<span class="keyword">push</span><span class="params">(<span class="keyword">fn</span>)</span></span>;</span><br><span class="line">  <span class="keyword">return</span> this;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>Koa的use很简单，就是把进来的函数压入到一个数组中。再看app.callback()做了什么：</p>
+<p><strong>app.callback</strong></p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">callback() &#123;</span><br><span class="line">  <span class="keyword">const</span> fn = compose(<span class="keyword">this</span>.middleware);	</span><br><span class="line">  <span class="keyword">const</span> handleRequest = <span class="function">(<span class="params">req, res</span>) =&gt;</span> &#123;</span><br><span class="line">	 <span class="keyword">const</span> ctx = <span class="keyword">this</span>.createContext(req, res);</span><br><span class="line">	 <span class="keyword">return</span> <span class="keyword">this</span>.handleRequest(ctx, fn);</span><br><span class="line">  &#125;;</span><br><span class="line">  <span class="keyword">return</span> handleRequest;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>首先是compose方法，简单说来就是把那些通过app.use设置的中间件组装成一个递归函数，递归的是Promise方法，而在中间件数组中都是async函数，async本身就是返回Promise，用递归的方式实现Promise的链式执行。    </p>
+<p>然后，执行callback()，callback返回了一个local作用域方法handleRequest。这个方法里面通过类方法<code>createContext</code>将req, res合成了ctx，我们会用到的全部属性都在ctx里面，然后将ctx和递归函数fn丢给内部方法<code>this.handleRequest</code>。当我们访问服务时，local的handleRequest(req, res)就触发执行了，并且返回的是<code>this.handleRequest</code>执行后的返回：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">handleRequest(ctx, fnMiddleware) &#123;</span><br><span class="line">  <span class="keyword">const</span> onerror = <span class="function"><span class="params">err</span> =&gt;</span> ctx.onerror(err);</span><br><span class="line">  <span class="keyword">const</span> handleResponse = <span class="function"><span class="params">()</span> =&gt;</span> respond(ctx);</span><br><span class="line">  <span class="keyword">return</span> fnMiddleware(ctx).then(handleResponse).catch(onerror);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>这时候compose后的链式Promise函数开始执行。到这里，反正我脑子已经不够用了。很抽象，每一行源码都涉及到很深的基础知识，还有对新特性的深入理解。基础不扎实，而且设计又很抽象，确实看起来比较费力。最后放上两张<a href="https://juejin.im/post/5a6dda1d5188257330612d88?utm_source=gold_browser_extension#heading-2" target="_blank" rel="noopener">参考文章-Koa2 还有多久取代 Express</a>里的两张图：    </p>
+<p>中间件执行顺序：<br><img src="/img/koa.gif" alt="koa"></p>
+<p>请求处理洋葱圈模型：<br><img src="/img/koause.png" alt="koa-use"></p>
+<p>后面用起来慢慢体会吧！看Koa2的源码，最大的感受就是Koa2充分运用新的语言特性，自身代码更简洁。整个框架就是4个js文件，结合注释都不到1K行。正如参考文章作者说的，这都是历史的必然。   </p>
+<p>对于为什么服务会这样运行，比如，createServer中我们注册的回调函数为什么会在访问浏览器时才触发？这里面需要结合node的事件机制来理解了。我了解不多，<a href="https://juejin.im/post/5a6dda1d5188257330612d88?utm_source=gold_browser_extension#heading-2" target="_blank" rel="noopener">参考文章-Koa2 还有多久取代 Express</a>也有提到，很多还不太理解。到能理解的时候，再做些记录。</p>
+<p><strong>TODO：</strong><br>1、搭建Koa2工程化服务<br>2、理解NodeJS事件机制</p>
+
+      
+    </div>
+
+    
+
+    
+    
+    
+
+    
+
+    
+       
+    
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/koa/" rel="tag"># koa</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2018/01/01/how-js-works/" rel="next" title="JavaScript是如何工作的">
+                <i class="fa fa-chevron-left"></i> JavaScript是如何工作的
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2018/01/31/ten-years/" rel="prev" title="我的十年">
+                我的十年 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+  </div>
+
+
+          </div>
+          
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <p class="site-author-name" itemprop="name">camiler lee</p>
+              <p class="site-description motion-element" itemprop="description">一枚患有严重选择综合症的前端学徒</p>
+          </div>
+
+          
+
+          
+
+          
+            <div class="links-of-author motion-element">
+              
+                <span class="links-of-author-item">
+                  
+                  
+                    
+                  
+                  
+                    
+                  
+                  <a href="https://github.com/camiler" title="GitHub &rarr; https://github.com/camiler" rel="noopener" target="_blank"><i class="fa fa-fw fa-github"></i>GitHub</a>
+                </span>
+              
+                <span class="links-of-author-item">
+                  
+                  
+                    
+                  
+                  
+                    
+                  
+                  <a href="mailto:liyue_suc@163.com" title="E-Mail &rarr; mailto:liyue_suc@163.com" rel="noopener" target="_blank"><i class="fa fa-fw fa-globe"></i>E-Mail</a>
+                </span>
+              
+                <span class="links-of-author-item">
+                  
+                  
+                    
+                  
+                  
+                    
+                  
+                  <a href="http://www.zcfy.cc/column/@camiler" title="翻译 &rarr; http://www.zcfy.cc/column/@camiler" rel="noopener" target="_blank"><i class="fa fa-fw fa-globe"></i>翻译</a>
+                </span>
+              
+            </div>
+          
+
+          
+
+          
+          
+
+          
+            
+          
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#简介"><span class="nav-number">1.</span> <span class="nav-text">简介</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Koa2-Vs-Express"><span class="nav-number">2.</span> <span class="nav-text">Koa2 Vs Express</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#设计哲学上的不同"><span class="nav-number">2.1.</span> <span class="nav-text">设计哲学上的不同</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Express原理浅析"><span class="nav-number">2.2.</span> <span class="nav-text">Express原理浅析</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Koa2"><span class="nav-number">2.3.</span> <span class="nav-text">Koa2</span></a></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2018</span>
+  <span class="with-love" id="animate">
+    <i class="fa fa-"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">camiler lee</span>
+
+  
+
+  
+</div>
+
+
+
+
+
+
+
+
+
+        
+<div class="busuanzi-count">
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+  
+
+  
+</div>
+
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+	
+    
+
+    
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=6.5.0"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=6.5.0"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=6.5.0"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=6.5.0"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=6.5.0"></script>
+
+
+
+  
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+  
+
+  <script type="text/javascript">
+    // Popup Window;
+    var isfetched = false;
+    var isXml = true;
+    // Search DB path;
+    var search_path = "search.xml";
+    if (search_path.length === 0) {
+      search_path = "search.xml";
+    } else if (/json$/i.test(search_path)) {
+      isXml = false;
+    }
+    var path = "/" + search_path;
+    // monitor main search box;
+
+    var onPopupClose = function (e) {
+      $('.popup').hide();
+      $('#local-search-input').val('');
+      $('.search-result-list').remove();
+      $('#no-result').remove();
+      $(".local-search-pop-overlay").remove();
+      $('body').css('overflow', '');
+    }
+
+    function proceedsearch() {
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay"></div>')
+        .css('overflow', 'hidden');
+      $('.search-popup-overlay').click(onPopupClose);
+      $('.popup').toggle();
+      var $localSearchInput = $('#local-search-input');
+      $localSearchInput.attr("autocapitalize", "none");
+      $localSearchInput.attr("autocorrect", "off");
+      $localSearchInput.focus();
+    }
+
+    // search function;
+    var searchFunc = function(path, search_id, content_id) {
+      'use strict';
+
+      // start loading animation
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay">' +
+          '<div id="search-loading-icon">' +
+          '<i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>' +
+          '</div>' +
+          '</div>')
+        .css('overflow', 'hidden');
+      $("#search-loading-icon").css('margin', '20% auto 0 auto').css('text-align', 'center');
+
+      
+
+      $.ajax({
+        url: path,
+        dataType: isXml ? "xml" : "json",
+        async: true,
+        success: function(res) {
+          // get the contents from search data
+          isfetched = true;
+          $('.popup').detach().appendTo('.header-inner');
+          var datas = isXml ? $("entry", res).map(function() {
+            return {
+              title: $("title", this).text(),
+              content: $("content",this).text(),
+              url: $("url" , this).text()
+            };
+          }).get() : res;
+          var input = document.getElementById(search_id);
+          var resultContent = document.getElementById(content_id);
+          var inputEventFunction = function() {
+            var searchText = input.value.trim().toLowerCase();
+            var keywords = searchText.split(/[\s\-]+/);
+            if (keywords.length > 1) {
+              keywords.push(searchText);
+            }
+            var resultItems = [];
+            if (searchText.length > 0) {
+              // perform local searching
+              datas.forEach(function(data) {
+                var isMatch = false;
+                var hitCount = 0;
+                var searchTextCount = 0;
+                var title = data.title.trim();
+                var titleInLowerCase = title.toLowerCase();
+                var content = data.content.trim().replace(/<[^>]+>/g,"");
+                
+                var contentInLowerCase = content.toLowerCase();
+                var articleUrl = decodeURIComponent(data.url);
+                var indexOfTitle = [];
+                var indexOfContent = [];
+                // only match articles with not empty titles
+                if(title != '') {
+                  keywords.forEach(function(keyword) {
+                    function getIndexByWord(word, text, caseSensitive) {
+                      var wordLen = word.length;
+                      if (wordLen === 0) {
+                        return [];
+                      }
+                      var startPosition = 0, position = [], index = [];
+                      if (!caseSensitive) {
+                        text = text.toLowerCase();
+                        word = word.toLowerCase();
+                      }
+                      while ((position = text.indexOf(word, startPosition)) > -1) {
+                        index.push({position: position, word: word});
+                        startPosition = position + wordLen;
+                      }
+                      return index;
+                    }
+
+                    indexOfTitle = indexOfTitle.concat(getIndexByWord(keyword, titleInLowerCase, false));
+                    indexOfContent = indexOfContent.concat(getIndexByWord(keyword, contentInLowerCase, false));
+                  });
+                  if (indexOfTitle.length > 0 || indexOfContent.length > 0) {
+                    isMatch = true;
+                    hitCount = indexOfTitle.length + indexOfContent.length;
+                  }
+                }
+
+                // show search results
+
+                if (isMatch) {
+                  // sort index by position of keyword
+
+                  [indexOfTitle, indexOfContent].forEach(function (index) {
+                    index.sort(function (itemLeft, itemRight) {
+                      if (itemRight.position !== itemLeft.position) {
+                        return itemRight.position - itemLeft.position;
+                      } else {
+                        return itemLeft.word.length - itemRight.word.length;
+                      }
+                    });
+                  });
+
+                  // merge hits into slices
+
+                  function mergeIntoSlice(text, start, end, index) {
+                    var item = index[index.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    var hits = [];
+                    var searchTextCountInSlice = 0;
+                    while (position + word.length <= end && index.length != 0) {
+                      if (word === searchText) {
+                        searchTextCountInSlice++;
+                      }
+                      hits.push({position: position, length: word.length});
+                      var wordEnd = position + word.length;
+
+                      // move to next position of hit
+
+                      index.pop();
+                      while (index.length != 0) {
+                        item = index[index.length - 1];
+                        position = item.position;
+                        word = item.word;
+                        if (wordEnd > position) {
+                          index.pop();
+                        } else {
+                          break;
+                        }
+                      }
+                    }
+                    searchTextCount += searchTextCountInSlice;
+                    return {
+                      hits: hits,
+                      start: start,
+                      end: end,
+                      searchTextCount: searchTextCountInSlice
+                    };
+                  }
+
+                  var slicesOfTitle = [];
+                  if (indexOfTitle.length != 0) {
+                    slicesOfTitle.push(mergeIntoSlice(title, 0, title.length, indexOfTitle));
+                  }
+
+                  var slicesOfContent = [];
+                  while (indexOfContent.length != 0) {
+                    var item = indexOfContent[indexOfContent.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    // cut out 100 characters
+                    var start = position - 20;
+                    var end = position + 80;
+                    if(start < 0){
+                      start = 0;
+                    }
+                    if (end < position + word.length) {
+                      end = position + word.length;
+                    }
+                    if(end > content.length){
+                      end = content.length;
+                    }
+                    slicesOfContent.push(mergeIntoSlice(content, start, end, indexOfContent));
+                  }
+
+                  // sort slices in content by search text's count and hits' count
+
+                  slicesOfContent.sort(function (sliceLeft, sliceRight) {
+                    if (sliceLeft.searchTextCount !== sliceRight.searchTextCount) {
+                      return sliceRight.searchTextCount - sliceLeft.searchTextCount;
+                    } else if (sliceLeft.hits.length !== sliceRight.hits.length) {
+                      return sliceRight.hits.length - sliceLeft.hits.length;
+                    } else {
+                      return sliceLeft.start - sliceRight.start;
+                    }
+                  });
+
+                  // select top N slices in content
+
+                  var upperBound = parseInt('1');
+                  if (upperBound >= 0) {
+                    slicesOfContent = slicesOfContent.slice(0, upperBound);
+                  }
+
+                  // highlight title and content
+
+                  function highlightKeyword(text, slice) {
+                    var result = '';
+                    var prevEnd = slice.start;
+                    slice.hits.forEach(function (hit) {
+                      result += text.substring(prevEnd, hit.position);
+                      var end = hit.position + hit.length;
+                      result += '<b class="search-keyword">' + text.substring(hit.position, end) + '</b>';
+                      prevEnd = end;
+                    });
+                    result += text.substring(prevEnd, slice.end);
+                    return result;
+                  }
+
+                  var resultItem = '';
+
+                  if (slicesOfTitle.length != 0) {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + highlightKeyword(title, slicesOfTitle[0]) + "</a>";
+                  } else {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + title + "</a>";
+                  }
+
+                  slicesOfContent.forEach(function (slice) {
+                    resultItem += "<a href='" + articleUrl + "'>" +
+                      "<p class=\"search-result\">" + highlightKeyword(content, slice) +
+                      "...</p>" + "</a>";
+                  });
+
+                  resultItem += "</li>";
+                  resultItems.push({
+                    item: resultItem,
+                    searchTextCount: searchTextCount,
+                    hitCount: hitCount,
+                    id: resultItems.length
+                  });
+                }
+              })
+            };
+            if (keywords.length === 1 && keywords[0] === "") {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-search fa-5x" /></div>'
+            } else if (resultItems.length === 0) {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-frown-o fa-5x" /></div>'
+            } else {
+              resultItems.sort(function (resultLeft, resultRight) {
+                if (resultLeft.searchTextCount !== resultRight.searchTextCount) {
+                  return resultRight.searchTextCount - resultLeft.searchTextCount;
+                } else if (resultLeft.hitCount !== resultRight.hitCount) {
+                  return resultRight.hitCount - resultLeft.hitCount;
+                } else {
+                  return resultRight.id - resultLeft.id;
+                }
+              });
+              var searchResultList = '<ul class=\"search-result-list\">';
+              resultItems.forEach(function (result) {
+                searchResultList += result.item;
+              })
+              searchResultList += "</ul>";
+              resultContent.innerHTML = searchResultList;
+            }
+          }
+
+          if ('auto' === 'manual') {
+            input.addEventListener('input', inputEventFunction);
+          } else {
+            $('.search-icon').click(inputEventFunction);
+            input.addEventListener('keypress', function (event) {
+              if (event.keyCode === 13) {
+                inputEventFunction();
+              }
+            });
+          }
+
+          // remove loading animation
+          $(".local-search-pop-overlay").remove();
+          $('body').css('overflow', '');
+
+          proceedsearch();
+        }
+      });
+    }
+
+    // handle and trigger popup window;
+    $('.popup-trigger').click(function(e) {
+      e.stopPropagation();
+      if (isfetched === false) {
+        searchFunc(path, 'local-search-input', 'local-search-result');
+      } else {
+        proceedsearch();
+      };
+    });
+
+    $('.popup-btn-close').click(onPopupClose);
+    $('.popup').click(function(e){
+      e.stopPropagation();
+    });
+    $(document).on('keyup', function (event) {
+      var shouldDismissSearchPopup = event.which === 27 &&
+        $('.search-popup').is(':visible');
+      if (shouldDismissSearchPopup) {
+        onPopupClose();
+      }
+    });
+  </script>
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>
