@@ -2,27 +2,15 @@
 
 
 
-
-
-
-
-
-
-
-
-
   
 
 
-<html class="theme-next mist use-motion" lang="zh-CN">
+<html class="theme-next gemini use-motion" lang="zh-Hans">
 <head>
   <meta charset="UTF-8"/>
 <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2"/>
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
 <meta name="theme-color" content="#222">
-
-
-
 
 
 
@@ -62,21 +50,41 @@
 
 <link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
 
-<link href="/css/main.css?v=6.5.0" rel="stylesheet" type="text/css" />
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css" />
 
 
 
-  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-logo.png?v=6.5.0">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.4">
 
 
-  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-logo.png?v=6.5.0">
-
-
-
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.4">
 
 
 
 
+
+
+  <meta name="keywords" content="camiler blog" />
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="一枚患有严重选择综合症的前端学徒">
+<meta property="og:type" content="website">
+<meta property="og:title" content="camiler">
+<meta property="og:url" content="http://camiler.github.io/page/2/index.html">
+<meta property="og:site_name" content="camiler">
+<meta property="og:description" content="一枚患有严重选择综合症的前端学徒">
+<meta property="og:locale" content="zh-Hans">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="camiler">
+<meta name="twitter:description" content="一枚患有严重选择综合症的前端学徒">
 
 
 
@@ -84,14 +92,16 @@
   var NexT = window.NexT || {};
   var CONFIG = {
     root: '/',
-    scheme: 'Mist',
-    version: '6.5.0',
-    sidebar: {"position":"left","display":"hide","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    scheme: 'Gemini',
+    version: '5.1.4',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
     fancybox: true,
-    fastclick: ,
-    lazyload: ,
     tabs: true,
     motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
     algolia: {
       applicationID: '',
       apiKey: '',
@@ -103,36 +113,12 @@
 </script>
 
 
-  
-
-
-
-
-  <meta name="description" content="一枚患有严重选择综合症的前端学徒">
-<meta property="og:type" content="website">
-<meta property="og:title" content="camiler">
-<meta property="og:url" content="http://camiler.github.io/page/2/index.html">
-<meta property="og:site_name" content="camiler">
-<meta property="og:description" content="一枚患有严重选择综合症的前端学徒">
-<meta property="og:locale" content="zh-CN">
-<meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="camiler">
-<meta name="twitter:description" content="一枚患有严重选择综合症的前端学徒">
-
-
-
-
-
 
   <link rel="canonical" href="http://camiler.github.io/page/2/"/>
 
 
 
-<script type="text/javascript" id="page.configurations">
-  CONFIG.page = {
-    sidebar: "",
-  };
-</script>
+
 
   <title>camiler</title>
   
@@ -144,39 +130,9 @@
 
 
 
-
-
-
-  <noscript>
-  <style type="text/css">
-    .use-motion .motion-element,
-    .use-motion .brand,
-    .use-motion .menu-item,
-    .sidebar-inner,
-    .use-motion .post-block,
-    .use-motion .pagination,
-    .use-motion .comments,
-    .use-motion .post-header,
-    .use-motion .post-body,
-    .use-motion .collection-title { opacity: initial; }
-
-    .use-motion .logo,
-    .use-motion .site-title,
-    .use-motion .site-subtitle {
-      opacity: initial;
-      top: initial;
-    }
-
-    .use-motion {
-      .logo-line-before i { left: initial; }
-      .logo-line-after i { right: initial; }
-    }
-  </style>
-</noscript>
-
 </head>
 
-<body itemscope itemtype="http://schema.org/WebPage" lang="zh-CN">
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
 
   
   
@@ -193,17 +149,19 @@
     
 
     <div class="custom-logo-site-title">
-      <a href="/" class="brand" rel="start">
+      <a href="/"  class="brand" rel="start">
         <span class="logo-line-before"><i></i></span>
         <span class="site-title">camiler</span>
         <span class="logo-line-after"><i></i></span>
       </a>
     </div>
-    
+      
+        <h1 class="site-subtitle" itemprop="description"></h1>
+      
   </div>
 
   <div class="site-nav-toggle">
-    <button aria-label="切换导航栏">
+    <button>
       <span class="btn-bar"></span>
       <span class="btn-bar"></span>
       <span class="btn-bar"></span>
@@ -211,132 +169,68 @@
   </div>
 </div>
 
-
-
 <nav class="site-nav">
+  
+
   
     <ul id="menu" class="menu">
       
         
-        
-        
-          
-          <li class="menu-item menu-item-home">
-
-    
-    
-    
-
-    
-
-    <a href="/" rel="section">首页</a>
-
-  </li>
-        
-        
-        
-          
-          <li class="menu-item menu-item-about">
-
-    
-    
-    
-
-    
-
-    <a href="/about/" rel="section">关于</a>
-
-  </li>
-        
-        
-        
-          
-          <li class="menu-item menu-item-categories">
-
-    
-    
-    
-
-    
-
-    <a href="/categories/" rel="section">分类</a>
-
-  </li>
-        
-        
-        
-          
-          <li class="menu-item menu-item-archives">
-
-    
-    
-    
-
-    
-
-    <a href="/archives/" rel="section">归档</a>
-
-  </li>
-
-      
-      
-        <li class="menu-item menu-item-search">
-          
-            <a href="javascript:;" class="popup-trigger">
-          
-            搜索</a>
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
         </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            关于
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th-large"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+
       
     </ul>
   
 
   
-    
-
-  
-
-  
-    <div class="site-search">
-      
-  <div class="popup search-popup local-search-popup">
-  <div class="local-search-header clearfix">
-    <span class="search-icon">
-      <i class="fa fa-search"></i>
-    </span>
-    <span class="popup-btn-close">
-      <i class="fa fa-times-circle"></i>
-    </span>
-    <div class="local-search-input-wrapper">
-      <input autocomplete="off"
-             placeholder="搜索..." spellcheck="false"
-             type="text" id="local-search-input">
-    </div>
-  </div>
-  <div id="local-search-result"></div>
-</div>
-
-
-
-    </div>
-  
 </nav>
 
 
 
-  
-
-
-
-</div>
+ </div>
     </header>
-
-    
-
 
     <main id="main" class="main">
       <div class="main-inner">
         <div class="content-wrap">
-          
           <div id="content" class="content">
             
   <section id="posts" class="posts-expand">
@@ -349,8 +243,6 @@
   
   
 
-  
-
   <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
   
   
@@ -360,8 +252,8 @@
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="camiler lee">
-      <meta itemprop="description" content="一枚患有严重选择综合症的前端学徒">
-      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.jpg">
     </span>
 
     <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
@@ -375,20 +267,11 @@
         
           <h2 class="post-title" itemprop="name headline">
                 
-                
-                <a href="/2017/08/12/初来乍到/" class="post-title-link" itemprop="http://camiler.github.io/page/2/index.html">初来乍到</a>
-              
-            
-          </h2>
+                <a class="post-title-link" href="/2017/08/12/初来乍到/" itemprop="url">初来乍到</a></h2>
         
 
         <div class="post-meta">
           <span class="post-time">
-
-            
-            
-            
-
             
               <span class="post-meta-item-icon">
                 <i class="fa fa-calendar-o"></i>
@@ -396,12 +279,11 @@
               
                 <span class="post-meta-item-text">发表于</span>
               
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-08-12T19:30:25+08:00">
+                2017-08-12
+              </time>
+            
 
-              
-                
-              
-
-              <time title="创建时间：2017-08-12 19:30:25" itemprop="dateCreated datePublished" datetime="2017-08-12T19:30:25+08:00">2017-08-12</time>
             
 
             
@@ -419,7 +301,11 @@
                 <span class="post-meta-item-text">分类于</span>
               
               
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/life/" itemprop="url" rel="index"><span itemprop="name">life</span></a></span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/life/" itemprop="url" rel="index">
+                    <span itemprop="name">life</span>
+                  </a>
+                </span>
 
                 
                 
@@ -428,6 +314,16 @@
           
 
           
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/2017/08/12/初来乍到/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count valine-comment-count" data-xid="/2017/08/12/初来乍到/" itemprop="commentCount"></span>
+                </a>
+              </span>
             
           
 
@@ -455,28 +351,25 @@
       
         
           
-          思前想后，终于还是来了。
-想想，第一次来北京是旅游。和大多数人一样，觉得应该到祖国中心看看，看看那个毛主席宣布“中华人民共和国在今天成立了”到天安门广场，看看被八国联军无耻扫荡的圆明园，看看绵延不绝永不倒的万里长城，还有无数学子向往的清华北大。于是，和室友在大三期末考完就坐了整整一天的火车来了，为此还逃了那个学期最后一堂行教课。在海淀黄庄附近的一个小酒店住了下来，现在看来一晚上很便宜，当然空间也很小。穷游嘛，玩了5天左右总共才花了一千多点。回想起来，可以用以下几个词概括：白天晒，晚上凉，酱太多，地铁方便。对，差不多就这些。夏天，空气也还好，感觉每天还蓝天白云。
-第二次是14年毕业，公司一个月培
-          ...
-          <!--noindex-->
+            <p>思前想后，终于还是来了。</p>
+<p>想想，第一次来北京是旅游。和大多数人一样，觉得应该到祖国中心看看，看看那个毛主席宣布“中华人民共和国在今天成立了”到天安门广场，看看被八国联军无耻扫荡的圆明园，看看绵延不绝永不倒的万里长城，还有无数学子向往的清华北大。于是，和室友在大三期末考完就坐了整整一天的火车来了，为此还逃了那个学期最后一堂行教课。在海淀黄庄附近的一个小酒店住了下来，现在看来一晚上很便宜，当然空间也很小。穷游嘛，玩了5天左右总共才花了一千多点。回想起来，可以用以下几个词概括：白天晒，晚上凉，酱太多，地铁方便。对，差不多就这些。夏天，空气也还好，感觉每天还蓝天白云。</p>
+<p>第二次是14年毕业，公司一个月培训，也是夏天。还是义无反顾的晒，公司地址在国家会议中心。出去就是鸟巢水立方。附近没什么人气，也看不到什么餐厅，只有一个商场，吃饭就要逛商场。还跟同届的小伙伴吃了北京烤鸭，反正至今不想再吃第二次。唯一觉得合口味的就是疙瘩汤了。那时候就想，幸好选择在成都的分公司。</p>
+<p>这一次，17年夏天，工作刚刚三年。这三年，在成都，我和男朋友结了婚，买了房，开了车，照理说就该过上平稳的小康生活了。但我俩总是不安分，总感觉生活太平常了，应该要有点什么来刺激一下，打破我们的舒适圈。很不幸，我俩又是程序员，成都的机会太少了，还是应该去北京打拼打拼，感受一下。于是，就这样，开始投北京的简历了，很快，陆陆续续地我就约了满满一周的面试。没想到hr的处理速度是这样快。是的，从这里就能感受到成都和北京的不同了。</p>
+<p>正如之前那些前辈说的，我俩在北京能很快找到合适的工作。我们不信，但结果正如他们所说，老公还开玩笑地说竟然体验到了offer收割机的感觉。所以在犹豫着想到北京来闯一闯的童鞋，如果你的能力还OK，心里总有点不甘心的话，就放心大胆的来吧。</p>
+<p>写到这里的时候，我已经工作两周了，在北京差不多已有一月有余。夏天的空气不算差，有的时候还能见到在成都都难得一见的纯粹的蓝天白云，还有点像是在泸沽湖那种天空。前两天早上中度污染，可一出门就感觉到了比成都更纯的雾霾，明显有种刺鼻的感觉。空气状况比较极端，就跟这里其他东西一样，比如外卖很便宜，因为满减很给力，而进店吃一碗面就是30起。这里早晚也很凉快，小区里的老大爷老奶奶都会出来乘凉。这是一座朝气蓬勃而又悠然自得的城市。大与小，老与少，很分明。</p>
+<p>对于城市的体会目前就这些，再说说工作氛围吧。确实和成都差别很大，因为这里大部分公司都会包晚饭，所以不用操心回家做饭，也就不急着要准点下班了。而且晚餐不重样，至少比自己做的好吃一点。所以，吃完后，再写会代码，差不多7点多，八点陆续也就回去了，也并没有觉得强度很大。而且，最重要的一点是，公司比那个没有家的感觉的出租屋更舒服，回去似乎也没什么特别的事，就这样，下班的时候就到了八九点了。这是我在成都怎么都无法想象的。而且是每天晚上如此。</p>
+<p>是的，迄今为止，并没有那么讨厌北京。</p>
+
           
-          <!--/noindex-->
         
       
     </div>
-
-    
-
     
     
     
 
     
 
-    
-       
-    
     
 
     
@@ -507,8 +400,6 @@
 
   
   
-  
-
   
 
   <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
@@ -520,8 +411,8 @@
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="camiler lee">
-      <meta itemprop="description" content="一枚患有严重选择综合症的前端学徒">
-      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.jpg">
     </span>
 
     <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
@@ -535,20 +426,11 @@
         
           <h2 class="post-title" itemprop="name headline">
                 
-                
-                <a href="/2017/06/28/interview/" class="post-title-link" itemprop="http://camiler.github.io/page/2/index.html">前端面试</a>
-              
-            
-          </h2>
+                <a class="post-title-link" href="/2017/06/28/interview/" itemprop="url">前端面试</a></h2>
         
 
         <div class="post-meta">
           <span class="post-time">
-
-            
-            
-            
-
             
               <span class="post-meta-item-icon">
                 <i class="fa fa-calendar-o"></i>
@@ -556,12 +438,11 @@
               
                 <span class="post-meta-item-text">发表于</span>
               
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-06-28T17:01:44+08:00">
+                2017-06-28
+              </time>
+            
 
-              
-                
-              
-
-              <time title="创建时间：2017-06-28 17:01:44" itemprop="dateCreated datePublished" datetime="2017-06-28T17:01:44+08:00">2017-06-28</time>
             
 
             
@@ -579,7 +460,11 @@
                 <span class="post-meta-item-text">分类于</span>
               
               
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/FE/" itemprop="url" rel="index"><span itemprop="name">FE</span></a></span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/FE/" itemprop="url" rel="index">
+                    <span itemprop="name">FE</span>
+                  </a>
+                </span>
 
                 
                 
@@ -588,6 +473,16 @@
           
 
           
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/2017/06/28/interview/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count valine-comment-count" data-xid="/2017/06/28/interview/" itemprop="commentCount"></span>
+                </a>
+              </span>
             
           
 
@@ -615,26 +510,63 @@
       
         
           
-          好吧，正式做了两年的前端er，现在轮到我找工作了。其实也没打算要离开，因为一直觉得自己还像一个嗷嗷待哺的雏鸟，离开了这个温暖的窝就无法生存。无奈公司的业务调整，我们几个人都离开了，我也不得不扑哧着翅膀摇摇晃晃的飞出去。工作期间没动力的时候就出去面试了下，主要是看看自己处于什么水平吧，发现基础确实不太扎实，也尽自己努力沉下心来系统的看书学习。面试肯定也要有所准备嘛，大半年的看书，确实对js有了更深入的理解，有些概念也慢慢明白。现在离职两周了，面了好些了，有几个感觉挺有希望的，也谈了薪资，不知道为什么最终没有offer。最欣慰的是，有一家公司第一面觉得我基础挺扎实，嘻嘻～很高兴得到这样的肯定，但是
-          ...
-          <!--noindex-->
+            <p>好吧，正式做了两年的前端er，现在轮到我找工作了。其实也没打算要离开，因为一直觉得自己还像一个嗷嗷待哺的雏鸟，离开了这个温暖的窝就无法生存。无奈公司的业务调整，我们几个人都离开了，我也不得不扑哧着翅膀摇摇晃晃的飞出去。<br>工作期间没动力的时候就出去面试了下，主要是看看自己处于什么水平吧，发现基础确实不太扎实，也尽自己努力沉下心来系统的看书学习。面试肯定也要有所准备嘛，大半年的看书，确实对js有了更深入的理解，有些概念也慢慢明白。<br>现在离职两周了，面了好些了，有几个感觉挺有希望的，也谈了薪资，不知道为什么最终没有offer。最欣慰的是，有一家公司第一面觉得我基础挺扎实，嘻嘻～很高兴得到这样的肯定，但是后面要求做个项目笔试题，有点不想做吧，加上又有另外一个公司的笔试项目题，就中断了。<br>现在想想，我还是不够努力吧，没有珍惜任何一次机会。说不定就有个offer了呢！汲取教训吧，以后不要再这样了。言归正传，记录下最近没回答好的面试题：</p>
+<p>1、讲讲输入完网址按下回车，到看到网页这个过程中发生了什么</p>
+<ul>
+<li>域名解析</li>
+<li>发起TCP的3次握手：<br>第一次：建立请求时，客户端向服务端发送一个序列包，syn=j。<br>第二次：服务端响应客户端的syn包，发送确认包的信息ack=j+1，自己再发送一个syn包是k。<br>第三次：客户端确认收到服务端的syn和ack，并向服务器发送ack包（ack=k+1）。发送后，服务端和客户端就建立起了TCP连接。</li>
+<li>建立TCP连接后发起http请求</li>
+<li>服务器端响应http请求，浏览器得到html代码</li>
+<li>浏览器解析html代码，并请求html代码中的资源   </li>
+<li>浏览器对页面进行渲染</li>
+</ul>
+<p>2、实现屏幕居中的正方形<br>解决难点：</p>
+<ul>
+<li>正方形<br>padding-top, margin-top是百分比时，是以父级元素的宽度为标准。</li>
+<li>垂直水平居中<br>flex，transform</li>
+</ul>
+<p>代码实现一：<br><figure class="highlight css"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="selector-tag">html</span>,<span class="selector-tag">body</span>&#123;</span><br><span class="line">    <span class="attribute">width</span>: <span class="number">100%</span>;</span><br><span class="line">    <span class="attribute">height</span>: <span class="number">100%</span>;</span><br><span class="line">    <span class="attribute">display</span>: flex;</span><br><span class="line">    <span class="attribute">align-items</span>: center;</span><br><span class="line">    <span class="attribute">justify-content</span>: center;</span><br><span class="line">&#125;</span><br><span class="line"><span class="selector-class">.square</span>&#123;</span><br><span class="line">    <span class="attribute">width</span>: <span class="number">30%</span>;</span><br><span class="line">    <span class="attribute">padding-top</span>: <span class="number">30%</span>;</span><br><span class="line">    <span class="attribute">border</span>: <span class="number">1px</span> solid <span class="number">#ddd</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>代码实现二：<br><figure class="highlight css"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="selector-tag">html</span>,<span class="selector-tag">body</span>&#123;</span><br><span class="line">    <span class="attribute">width</span>: <span class="number">100%</span>;</span><br><span class="line">    <span class="attribute">height</span>: <span class="number">100%</span>;</span><br><span class="line">    <span class="attribute">position</span>: relative;</span><br><span class="line">&#125;</span><br><span class="line"><span class="selector-class">.square</span>&#123;</span><br><span class="line">    <span class="attribute">width</span>: <span class="number">30%</span>;</span><br><span class="line">    <span class="attribute">padding-top</span>: <span class="number">30%</span>;</span><br><span class="line">    <span class="attribute">border</span>: <span class="number">1px</span> solid <span class="number">#ddd</span>;</span><br><span class="line">    <span class="attribute">position</span>: absolute;</span><br><span class="line">    <span class="attribute">top</span>: <span class="number">50%</span>;</span><br><span class="line">    <span class="attribute">left</span>: <span class="number">50%</span>;</span><br><span class="line">    <span class="attribute">transform</span>: <span class="built_in">translate3d</span>(-50%, -50%, 0);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>3、一个页面上有大量的图片（大型电商网站），加载很慢，你有哪些方法优化这些图片的加载，给用户更好的体验。</p>
+<ul>
+<li>图片懒加载，滚动到相应位置才加载图片。</li>
+<li>图片预加载，如果为幻灯片、相册等，将当前展示图片的前一张和后一张优先下载。</li>
+<li>使用CSSsprite，SVGsprite，Iconfont、Base64等技术，如果图片为css图片的话。</li>
+<li>如果图片过大，可以使用特殊编码的图片，加载时会先加载一张压缩的特别厉害的缩略图，以提高用户体验。</li>
+<li>CDN缓存图片</li>
+</ul>
+<p>4、requireJS模块加载原理<br>依次加载require的模块，然后监听文档的onreadystatechange事件（若不支持就监听script的onload事件），判断所有模块加载成功，执行require的callback， 如果只带一个参数且不是数组，就是加载成功后return 模块。</p>
+<p>这其中有两个问题：</p>
+<ul>
+<li>如何解决循环依赖，造成加载死循环：<br>在模块加载依赖的时候，先检查模块依赖中是否存在正在注册的模块，如果存在的话，则先将模块依赖数量减一。通过这种方法用来解决循环依赖的问题。</li>
+<li>如何解决重复加载：<br>将已经加载的模块放到一个对象中，在加载依赖时，先检查这个对象中是否存在，如果存在直接返回这个模块。</li>
+</ul>
+<p>5、vue和react的区别</p>
+<ul>
+<li>最直观的区别就是Vue比React体量更小。</li>
+<li>JSX vs Templates: react中所有的组件渲染都依靠JSX，偏逻辑。Vue更相对传统，基于 HTML 的模板更偏向视图形式。</li>
+<li>规模上来讲：react社区比vue更繁荣，因为vue中的路由管理都是由官方同步更新，react是交由社区维护。</li>
+</ul>
+<p>6、用一个函数实现add(1,2)=3, add(1)(2) = 3…..<br><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">add</span>(<span class="params"></span>)</span>&#123;</span><br><span class="line">    <span class="keyword">var</span> args = <span class="built_in">Array</span>.prototype.slice.call(<span class="built_in">arguments</span>, <span class="number">0</span>);</span><br><span class="line">    <span class="keyword">return</span> <span class="function"><span class="keyword">function</span> <span class="title">sum</span>(<span class="params"></span>)</span>&#123;</span><br><span class="line">        <span class="keyword">if</span>(!<span class="built_in">arguments</span>.length)&#123;</span><br><span class="line">            <span class="keyword">var</span> s = <span class="number">0</span>;</span><br><span class="line">            <span class="keyword">for</span>(<span class="keyword">var</span> i=<span class="number">0</span>; i&lt;args.length; i++)&#123;</span><br><span class="line">                s += args[i];</span><br><span class="line">            &#125;</span><br><span class="line">            <span class="keyword">return</span> s;</span><br><span class="line">        &#125;<span class="keyword">else</span>&#123;</span><br><span class="line">            <span class="keyword">var</span> otherArgs = <span class="built_in">Array</span>.prototype.slice.call(<span class="built_in">arguments</span>, <span class="number">0</span>);</span><br><span class="line">            args.push(otherArgs);</span><br><span class="line">            <span class="comment">//Array.prototype.push.apply(args, arguments);</span></span><br><span class="line">            <span class="keyword">return</span> sum;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;，</span><br><span class="line"></span><br><span class="line"><span class="built_in">console</span>.log(add(<span class="number">1</span>, <span class="number">2</span>)());</span><br><span class="line"><span class="built_in">console</span>.log(add(<span class="number">1</span>)(<span class="number">2</span>)(<span class="number">3</span>)());</span><br></pre></td></tr></table></figure></p>
+<p>7、找出n以内的质数，尽量快。<br>一个是用sqrt，另外就是用筛选法，一次筛出2、3、5、7、…的倍数，直到i * i &gt; n。剩下的就是质数了。</p>
+<p>8、问为什么要雇用你，你有什么价值。<br>其实挺讨厌这样的问题的，我怎么知道你看中我的啥。事后想想，我觉得我可以这样说：我觉得目前为止，自己就是一颗螺丝钉，虽不起眼，但在整个机器运作中，也发挥了自己的力量。至于为什么不是其他螺丝钉，我想通过一轮一轮的面试，你们会觉得我是一个稳定的靠谱的螺丝钉吧。</p>
+<p>9、块级元素和行内元素的区别<br>行内是指 <code>display: inline</code>的元素 ，这类元素设置margin时，只有左右会生效。padding也会生效。常用的span、em、strong都是行内元素。<br>块级是指元素出了内容区以为的空间都会被占满。div  p  ul都是块级元素。</p>
+<p>10、position的定位<br>主要是relative属性和static属性，因为这两个中， static是默认的，通常没太在意。relative，通常是搭配子元素需要绝对定位的时候用，也没怎么去了解它本身的定义。<br><strong>必须记住</strong>：<code>static</code>的元素是代表不能被positioned的，即没有<code>top</code>, <code>left</code>, <code>right</code>, <code>bottom</code>这些属性，而<code>position</code>不是<code>static</code>的情况都是可以被positioned，均有偏移属性。<br>那么为什么通常会将<code>relative</code>和<code>absolute</code>搭配使用，是因为<code>absolute</code>的元素是相对于<strong>最近的一个positioned的父级元素</strong>，这样说来其实父级元素只要不是<code>static</code>定位的都可以进行子元素相对父元素的绝对定位。如果绝对定位的元素没有“positioned”的父元素，那么它是相对于文档的 body 元素，并且它会随着页面滚动而滚动。<br>详细解读可查看<a href="http://zh.learnlayout.com/position.html" target="_blank" rel="noopener">这篇文章</a>。</p>
+<p>11、shouldComponentUpdate和setState有什么关联<br>setState之后，会走shouldComponentUpdate这个阶段，因为这里默认返回是true，所以都会进行re-render，如果在shouldComponentUpdate中，根据nextState和this.state或者nextProps和this.props进行比较，确认是否需要更新，返回false的情况下就不会进行re-render。</p>
+<p>12、对ES6中class的理解<br>Class就是一个对象原型写法的语法糖，更清晰，更面向对象，更接近传统语言的写法。<br>ES5定义类的写法：<br><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">Point</span>(<span class="params">x, y</span>) </span>&#123;</span><br><span class="line">  <span class="keyword">this</span>.x = x;</span><br><span class="line">  <span class="keyword">this</span>.y = y;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">Point.prototype.toString = <span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123;</span><br><span class="line">  <span class="keyword">return</span> <span class="string">'('</span> + <span class="keyword">this</span>.x + <span class="string">', '</span> + <span class="keyword">this</span>.y + <span class="string">')'</span>;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="keyword">var</span> p = <span class="keyword">new</span> Point(<span class="number">1</span>, <span class="number">2</span>);</span><br></pre></td></tr></table></figure></p>
+<p>ES6定义：<br><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Point</span> </span>&#123;</span><br><span class="line">  <span class="keyword">constructor</span>(x, y) &#123;</span><br><span class="line">    <span class="keyword">this</span>.x = x;</span><br><span class="line">    <span class="keyword">this</span>.y = y;</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  toString() &#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="string">'('</span> + <span class="keyword">this</span>.x + <span class="string">', '</span> + <span class="keyword">this</span>.y + <span class="string">')'</span>;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>ES5中的构造函数就类似class中的<code>constructor</code>，原型上的方法就是类中声明的函数。class声明的类和ES5中构造函数使用一样。<br>另外用Class声明的类不会存在变量提升。<a href="http://es6.ruanyifeng.com/#docs/class" target="_blank" rel="noopener">完整解释</a>。</p>
+
           
-          <!--/noindex-->
         
       
     </div>
-
-    
-
     
     
     
 
     
 
-    
-       
-    
     
 
     
@@ -665,8 +597,6 @@
 
   
   
-  
-
   
 
   <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
@@ -678,8 +608,8 @@
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="camiler lee">
-      <meta itemprop="description" content="一枚患有严重选择综合症的前端学徒">
-      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.jpg">
     </span>
 
     <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
@@ -693,20 +623,11 @@
         
           <h2 class="post-title" itemprop="name headline">
                 
-                
-                <a href="/2017/05/11/script/" class="post-title-link" itemprop="http://camiler.github.io/page/2/index.html">非阻塞脚本</a>
-              
-            
-          </h2>
+                <a class="post-title-link" href="/2017/05/11/script/" itemprop="url">非阻塞脚本</a></h2>
         
 
         <div class="post-meta">
           <span class="post-time">
-
-            
-            
-            
-
             
               <span class="post-meta-item-icon">
                 <i class="fa fa-calendar-o"></i>
@@ -714,12 +635,11 @@
               
                 <span class="post-meta-item-text">发表于</span>
               
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-05-11T16:24:25+08:00">
+                2017-05-11
+              </time>
+            
 
-              
-                
-              
-
-              <time title="创建时间：2017-05-11 16:24:25" itemprop="dateCreated datePublished" datetime="2017-05-11T16:24:25+08:00">2017-05-11</time>
             
 
             
@@ -737,7 +657,11 @@
                 <span class="post-meta-item-text">分类于</span>
               
               
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/FE/" itemprop="url" rel="index"><span itemprop="name">FE</span></a></span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/FE/" itemprop="url" rel="index">
+                    <span itemprop="name">FE</span>
+                  </a>
+                </span>
 
                 
                 
@@ -746,6 +670,16 @@
           
 
           
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/2017/05/11/script/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count valine-comment-count" data-xid="/2017/05/11/script/" itemprop="commentCount"></span>
+                </a>
+              </span>
             
           
 
@@ -773,32 +707,49 @@
       
         
           
-          什么是阻塞？我的理解：当外部引入的js文件或者css文件一直没有下载成功，导致页面DOM没有渲染出来时，就形成了页面阻塞。这显然对用户体验很差。
-怎么才能不阻塞？从阻塞的形成，我们就知道造成阻塞可能有以下原因：
+            <h4 id="什么是阻塞？"><a href="#什么是阻塞？" class="headerlink" title="什么是阻塞？"></a>什么是阻塞？</h4><p>我的理解：当外部引入的js文件或者css文件一直没有下载成功，导致页面DOM没有渲染出来时，就形成了页面阻塞。这显然对用户体验很差。</p>
+<h4 id="怎么才能不阻塞？"><a href="#怎么才能不阻塞？" class="headerlink" title="怎么才能不阻塞？"></a>怎么才能不阻塞？</h4><p>从阻塞的形成，我们就知道造成阻塞可能有以下原因：</p>
+<ul>
+<li>js，css文件较多，较大。下载时间长。</li>
+<li>js 文件在DOM文档结构之前，js一直在下载或执行中。  </li>
+</ul>
+<p>所以针对以上可能的原因，我们发现根本在于JS加载执行时间和DOM渲染时间的冲突。那么，只要保证JS加载执行在DOM加载后，是不是就能保证是无阻塞脚本了呢。从技术的角度讲，就是在window的load事件触发之后再下载文件。<br>对于CSS，如果CSS比较少，可以采取内联的方式放在HTML<style></style>里面，可以看到，webpack在打包时就是引入相关的CSS内联到页面中。<br>对于JS，有以下几种方式：   </p>
+<ol>
+<li><code>&lt;script&gt;</code>标签放在<code>&lt;body&gt;</code>里面，但是DOM结构之后，这样就能保证DOM加载完再加载JS文件，或者script标签里的JS代码。</li>
+<li><p>HTML4<code>script</code>标签有一个defer属性，意思是延迟。jquery.min.js会异步加载，不影响DOM的加载，只是会等到DOM加载完成后再执行。</p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">script</span> <span class="attr">src</span>=<span class="string">"jquery.min.js"</span> <span class="attr">defer</span>&gt;</span><span class="undefined"></span><span class="tag">&lt;/<span class="name">script</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<p>注意：HTML5新增了一个属性async，它和defer的区别在于，在异步加载JS之后会自动执行，执行的过程可能会阻塞DOM。</p>
+</li>
+<li><p>动态脚本插入</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line">&lt;script type=<span class="string">"text/javascript"</span>&gt;</span><br><span class="line">    <span class="function"><span class="keyword">function</span> <span class="title">loadScript</span>(<span class="params">url, callback</span>)</span>&#123;</span><br><span class="line">        <span class="keyword">var</span> script = <span class="built_in">document</span>.createElement(<span class="string">'script'</span>);</span><br><span class="line">        script.type = <span class="string">"text/javascript"</span>;</span><br><span class="line">        <span class="keyword">if</span> (script.readyState) &#123; <span class="comment">//IE</span></span><br><span class="line">            script.onreadystatechange = <span class="function"><span class="keyword">function</span>(<span class="params"></span>)</span>&#123;</span><br><span class="line">                <span class="keyword">if</span> (script.readyState === <span class="string">'loaded'</span> || script.readyState === <span class="string">"complete"</span>) &#123;</span><br><span class="line">                    script.onreadystatechange = <span class="literal">null</span>;</span><br><span class="line">                    callback();</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;<span class="keyword">else</span>&#123;</span><br><span class="line">            script.onload = <span class="function"><span class="keyword">function</span>(<span class="params"></span>)</span>&#123;</span><br><span class="line">                callback();</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        script.src = url;</span><br><span class="line">        <span class="built_in">document</span>.getElementsByTagName(<span class="string">'head'</span>)[<span class="number">0</span>].appendChild(script);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    loadScript(<span class="string">"https://www.google-analytics.com/analytics.js"</span>, <span class="function"><span class="keyword">function</span>(<span class="params"></span>)</span>&#123;</span><br><span class="line">        <span class="comment">//js逻辑</span></span><br><span class="line">        alert(<span class="string">'loaded'</span>);</span><br><span class="line">    &#125;)</span><br><span class="line">&lt;<span class="regexp">/script&gt;</span></span><br></pre></td></tr></table></figure>
+</li>
+</ol>
+<p>IE 对这两个 readyState 值所表示的最终状态并不一致，有时<code>&lt;script&gt;</code>元素会得到“loaded”却从不出现“complete”，但另外 一些情况下出现“complete”而用不到“loaded”。最安全的办法就是在 readystatechange 事件中检查这两种状 态，<strong>并且当其中一种状态出现时，删除 readystatechange 事件句柄(保证事件不会被处理两次)</strong>。<br>通过这种方法，无论在何处启动下载，文件的下载和运行都不会阻塞其他页面处理过程。你甚至可以将这些代码放在 <head><meta name="generator" content="Hexo 3.8.0">部分而不会对其余部分的页面代码造成影响(除了用于下载文件的 HTTP 连接)。同时，这种方法可以跨域加载，所以比较常用。</head></p>
+<ol>
+<li>XMLHttpRequest动态脚本注入<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">&lt;script type=<span class="string">"text/javascript"</span>&gt;</span><br><span class="line">    <span class="keyword">var</span> xhr = <span class="keyword">new</span> XMLHttpRequest();</span><br><span class="line">    xhr.open(<span class="string">'get'</span>, <span class="string">'file.js'</span>, <span class="literal">true</span>);</span><br><span class="line">    xhr.onreadystatechange = <span class="function"><span class="keyword">function</span>(<span class="params"></span>)</span>&#123;</span><br><span class="line">        <span class="keyword">if</span> (xhr.readyState === <span class="number">4</span>) &#123;</span><br><span class="line">            <span class="keyword">if</span> (xhr.status &gt;= <span class="number">200</span> &amp;&amp; xhr.status &lt; <span class="number">300</span> || xhr.status === <span class="number">304</span>)&#123;</span><br><span class="line">                <span class="keyword">var</span> script = <span class="built_in">document</span>.createElement(<span class="string">'script'</span>);</span><br><span class="line">                script.type = <span class="string">'text/javascript'</span>;</span><br><span class="line">                script.text = xhr.responseText;</span><br><span class="line">                <span class="built_in">console</span>.log(script.text);</span><br><span class="line">                <span class="built_in">document</span>.body.appendChild(script);</span><br><span class="line">            &#125;   </span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    xhr.send(<span class="literal">null</span>);</span><br><span class="line">&lt;<span class="regexp">/script&gt;</span></span><br></pre></td></tr></table></figure>
+</li>
+</ol>
+<p>执行之后如下：</p>
+<p><img src="http://upload-images.jianshu.io/upload_images/2165404-530389b2a8671340.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="image.png"></p>
+<p>但这种无法跨域下载，所以运用较少。</p>
+<h4 id="建议的无阻塞模式"><a href="#建议的无阻塞模式" class="headerlink" title="建议的无阻塞模式"></a>建议的无阻塞模式</h4><p>通过以上的分析，权衡利弊之后，应该是通过loadScript方式，会更好一些。将页面初始化所需的JS单独加载之后，再通过动态加载的方式加载其他不需要立即执行的JS代码。 例如:<br><figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">script</span> <span class="attr">type</span>=<span class="string">"text/javascript"</span> <span class="attr">src</span>=<span class="string">"loader.js"</span>&gt;</span><span class="undefined"></span><span class="tag">&lt;/<span class="name">script</span>&gt;</span> //初始化页面时需要的JS代码</span><br><span class="line"><span class="tag">&lt;<span class="name">script</span> <span class="attr">type</span>=<span class="string">"text/javascript"</span>&gt;</span><span class="undefined"></span></span><br><span class="line"><span class="actionscript">  loadScript(<span class="string">"the-rest.js"</span>, <span class="function"><span class="keyword">function</span><span class="params">()</span></span>&#123; </span></span><br><span class="line"><span class="undefined">      Application.init();</span></span><br><span class="line"><span class="undefined">  &#125;); </span></span><br><span class="line"><span class="undefined"></span><span class="tag">&lt;/<span class="name">script</span>&gt;</span></span><br></pre></td></tr></table></figure></p>
+<p>另外，再结合第一种将<code>script</code>放在<code>&lt;/body&gt;</code>之前，DOM之后。这样当第二部分 JavaScript 文件完成下载，所有应用程序所必须的 DOM 已经创建好了，并做好被访问的准备，避免使用额外的事件处理(例如 window.onload) 来得知页面是否已经准备好了。<br>对于这种方式，有完整的开源实现，只需要引用就行了：</p>
+<ul>
+<li>雅虎的<a href="http://github.com/rgrove/lazyload/" target="_blank" rel="noopener">lazyLoad</a></li>
+<li><a href="http://labjs.com/" target="_blank" rel="noopener">LABjs</a></li>
+</ul>
+<h4 id="更多参考"><a href="#更多参考" class="headerlink" title="更多参考"></a>更多参考</h4><p><a href="https://segmentfault.com/q/1010000000640869" target="_blank" rel="noopener">defer和async的区别</a><br><a href="http://ued.ctrip.com/blog/script-defer-and-async.html#" target="_blank" rel="noopener">script的defer和async</a><br><a href="https://juejin.im/post/587f4afb61ff4b00651b3c18" target="_blank" rel="noopener">什么阻塞了DOM</a></p>
 
-js，css文件较多，较大。下载时间长。
-js 文件在DOM文档结构之前，js一直在下载或执行中。  
-
-所以针对以上可能的原因，我们发现根本在于JS加载执行时间和DOM渲染时间的冲突。那么，只要保证JS加载执行在DOM加载后，是不是就能保证是无阻塞脚本了呢。从技术的角度讲，就是在window的load事件触发之后再下载文件。对于CSS，如果CSS比较少，可以采取内联的方式放在HTM
-          ...
-          <!--noindex-->
           
-          <!--/noindex-->
         
       
     </div>
-
-    
-
     
     
     
 
     
 
-    
-       
-    
     
 
     
@@ -831,8 +782,6 @@ js 文件在DOM文档结构之前，js一直在下载或执行中。
   
   
 
-  
-
   <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
   
   
@@ -842,8 +791,8 @@ js 文件在DOM文档结构之前，js一直在下载或执行中。
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="camiler lee">
-      <meta itemprop="description" content="一枚患有严重选择综合症的前端学徒">
-      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.jpg">
     </span>
 
     <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
@@ -857,20 +806,11 @@ js 文件在DOM文档结构之前，js一直在下载或执行中。
         
           <h2 class="post-title" itemprop="name headline">
                 
-                
-                <a href="/2017/01/22/youdontkownjs1/" class="post-title-link" itemprop="http://camiler.github.io/page/2/index.html">你不知道的JS-引擎、作用域、编译器</a>
-              
-            
-          </h2>
+                <a class="post-title-link" href="/2017/01/22/youdontkownjs1/" itemprop="url">你不知道的JS-引擎、作用域、编译器</a></h2>
         
 
         <div class="post-meta">
           <span class="post-time">
-
-            
-            
-            
-
             
               <span class="post-meta-item-icon">
                 <i class="fa fa-calendar-o"></i>
@@ -878,12 +818,11 @@ js 文件在DOM文档结构之前，js一直在下载或执行中。
               
                 <span class="post-meta-item-text">发表于</span>
               
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-01-22T17:27:09+08:00">
+                2017-01-22
+              </time>
+            
 
-              
-                
-              
-
-              <time title="创建时间：2017-01-22 17:27:09" itemprop="dateCreated datePublished" datetime="2017-01-22T17:27:09+08:00">2017-01-22</time>
             
 
             
@@ -901,7 +840,11 @@ js 文件在DOM文档结构之前，js一直在下载或执行中。
                 <span class="post-meta-item-text">分类于</span>
               
               
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/FE/" itemprop="url" rel="index"><span itemprop="name">FE</span></a></span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/FE/" itemprop="url" rel="index">
+                    <span itemprop="name">FE</span>
+                  </a>
+                </span>
 
                 
                 
@@ -910,6 +853,16 @@ js 文件在DOM文档结构之前，js一直在下载或执行中。
           
 
           
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/2017/01/22/youdontkownjs1/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count valine-comment-count" data-xid="/2017/01/22/youdontkownjs1/" itemprop="commentCount"></span>
+                </a>
+              </span>
             
           
 
@@ -937,33 +890,36 @@ js 文件在DOM文档结构之前，js一直在下载或执行中。
       
         
           
-          最近在开始看《你不知道的JS》，深入讲解JS内部的原理。做些笔记，温故知新。
-引擎、作用域、编译器的关系在最开始学习编程的时候，大家都会想我们这些代码是怎么转换成计算机可以执行的指令？这一转换很复杂，细想之，也很神奇。就我能所了解的，大概是这样的步骤：
+            <p>最近在开始看《你不知道的JS》，深入讲解JS内部的原理。做些笔记，温故知新。</p>
+<h3 id="引擎、作用域、编译器的关系"><a href="#引擎、作用域、编译器的关系" class="headerlink" title="引擎、作用域、编译器的关系"></a>引擎、作用域、编译器的关系</h3><p>在最开始学习编程的时候，大家都会想我们这些代码是怎么转换成计算机可以执行的指令？这一转换很复杂，细想之，也很神奇。就我能所了解的，大概是这样的步骤：</p>
+<ul>
+<li>1、程序代码经过编译器的词法分析，语义分析，形成语义结构树，并分配逻辑内存。</li>
+<li>2、转换成汇编指令，分配物理内存。</li>
+<li>3、汇编指令转换为电路逻辑，具体形成计算机执行的二进制指令，通过0、1来控制电路。   </li>
+</ul>
+<p>我想，大概是这样吧。其实这三步对应的正是我们大学学习计算机的三门课程：编译原理、汇编、数字逻辑。这里面的逻辑地址和物理地址其实我也忘了，我猜大概是这样。因为没有一个老师会讲从c或者Java代码到cpu执行究竟是怎样的过程，每一门课程都是单独的，只会讲到那门课对应的内容。扯远了，JavaScript的编译器做的事情和其他语言编译器做的事情是一致的，都是进行词法分析和语法分析。在编译的过程中，会和作用域配合，分配内存。   </p>
+<p>JavaScript是一门运行时语言，编译时间很少，引擎在执行过程中会不断查找作用域。查找有两种方式：RHS和LHS。   </p>
+<ul>
+<li>LHS：赋值查找，比如var a = 2; 事实上，引擎会分两步执行这条语句。第一步var a，引擎会在作用域中查找变量a，如果存在，就执行第二步”=2”，即把2赋值给a。如果没有找到，就在作用域中创建一个变量a，再执行第二步。</li>
+<li>RHS : 取得源值，比如console.log(a); 其中a就是RHS查询，这里要获得a的值。</li>
+</ul>
+<p>可以说，编译器和作用域是引擎的基础，编译器对代码进行优化，合理组织作用域，可以让引擎更方便的查询作用域。</p>
+<h3 id="为什么有RHS和LHS查询"><a href="#为什么有RHS和LHS查询" class="headerlink" title="为什么有RHS和LHS查询"></a>为什么有RHS和LHS查询</h3><h4 id="非严格模式"><a href="#非严格模式" class="headerlink" title="非严格模式"></a>非严格模式</h4><p><img src="/img/you-dont-kown-js-1-01.png" alt="you-dont-kown-js-1-01"></p>
+<p>在foo里面，执行a+b，对b进行RHS查询时，没有找到b，出现ReferenceError。将b =2；放在前面，虽然没有var b；但这时对b是LHS查询，查询不到会自动在全局作用域中创建变量b，并赋值。而后自然能RHS查询取得b的值。</p>
+<h4 id="严格模式"><a href="#严格模式" class="headerlink" title="严格模式"></a>严格模式</h4><p><img src="/img/you-dont-kown-js-1-02.png" alt="you-dont-kown-js-1-02"><br>当LHS查询不到b时，并不会自动创建该变量。</p>
+<h3 id="作用域"><a href="#作用域" class="headerlink" title="作用域"></a>作用域</h3><h4 id="作用域气泡"><a href="#作用域气泡" class="headerlink" title="作用域气泡"></a>作用域气泡</h4><p><img src="/img/you-dont-kown-js-1-03.png" alt="you-dont-kown-js-1-03">   </p>
+<h4 id="查询规则"><a href="#查询规则" class="headerlink" title="查询规则"></a>查询规则</h4><p>   在当前作用域查找，如果查找不到，就向上（向外层）作用域查找，直到首次找到为止。（找到后就不再查找，注意变量隐藏，替换的问题）</p>
 
-1、程序代码经过编译器的词法分析，语义分析，形成语义结构树，并分配逻辑内存。
-2、转换成汇编指令，分配物理内存。
-3、汇编指令转换为电路逻辑，具体形成计算机执行的二进制指令，通过0、1来控制电路。   
-
-我想，大概是这样吧。其实这三步对应的正是我们大学学习计算机的三门课程：编译原理、汇编、数字逻辑。这里面的逻辑地址和物理地址其实我也忘了，我
-          ...
-          <!--noindex-->
           
-          <!--/noindex-->
         
       
     </div>
-
-    
-
     
     
     
 
     
 
-    
-       
-    
     
 
     
@@ -992,12 +948,15 @@ js 文件在DOM文档结构之前，js一直在下载或执行中。
 
   
   <nav class="pagination">
-    <a class="extend prev" rel="prev" href="/"><i class="fa fa-angle-left" aria-label="上一页"></i></a><a class="page-number" href="/">1</a><span class="page-number current">2</span>
+    <a class="extend prev" rel="prev" href="/"><i class="fa fa-angle-left"></i></a><a class="page-number" href="/">1</a><span class="page-number current">2</span>
   </nav>
 
 
 
           </div>
+          
+
+
           
 
         </div>
@@ -1024,61 +983,83 @@ js 文件在DOM文档结构之前，js一直在下载或执行中。
         <div class="site-overview">
           <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
             
+              <img class="site-author-image" itemprop="image"
+                src="/images/avatar.jpg"
+                alt="camiler lee" />
+            
               <p class="site-author-name" itemprop="name">camiler lee</p>
-              <p class="site-description motion-element" itemprop="description">一枚患有严重选择综合症的前端学徒</p>
+              <p class="site-description motion-element" itemprop="description"></p>
           </div>
 
-          
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">14</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                
+                  <span class="site-state-item-count">2</span>
+                  <span class="site-state-item-name">分类</span>
+                
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                
+                  <span class="site-state-item-count">8</span>
+                  <span class="site-state-item-name">标签</span>
+                
+              </div>
+            
+
+          </nav>
 
           
 
           
             <div class="links-of-author motion-element">
-              
-                <span class="links-of-author-item">
-                  
-                  
-                    
-                  
-                  
-                    
-                  
-                  <a href="https://github.com/camiler" title="GitHub &rarr; https://github.com/camiler" rel="noopener" target="_blank"><i class="fa fa-fw fa-github"></i>GitHub</a>
-                </span>
-              
-                <span class="links-of-author-item">
-                  
-                  
-                    
-                  
-                  
-                    
-                  
-                  <a href="mailto:liyue_suc@163.com" title="E-Mail &rarr; mailto:liyue_suc@163.com" rel="noopener" target="_blank"><i class="fa fa-fw fa-globe"></i>E-Mail</a>
-                </span>
-              
-                <span class="links-of-author-item">
-                  
-                  
-                    
-                  
-                  
-                    
-                  
-                  <a href="http://www.zcfy.cc/column/@camiler" title="翻译 &rarr; http://www.zcfy.cc/column/@camiler" rel="noopener" target="_blank"><i class="fa fa-fw fa-globe"></i>翻译</a>
-                </span>
-              
+                
+                  <span class="links-of-author-item">
+                    <a href="https://github.com/camiler" target="_blank" title="GitHub">
+                      
+                        <i class="fa fa-fw fa-github"></i>GitHub</a>
+                  </span>
+                
+                  <span class="links-of-author-item">
+                    <a href="mailto:liyue_suc@163.com" target="_blank" title="E-Mail">
+                      
+                        <i class="fa fa-fw fa-globe"></i>E-Mail</a>
+                  </span>
+                
+                  <span class="links-of-author-item">
+                    <a href="http://www.zcfy.cc/column/@camiler" target="_blank" title="翻译">
+                      
+                        <i class="fa fa-fw fa-globe"></i>翻译</a>
+                  </span>
+                
             </div>
           
 
           
-
-          
           
 
           
-            
           
+
           
 
         </div>
@@ -1099,16 +1080,16 @@ js 文件在DOM文档结构之前，js一直在下载或执行中。
     <footer id="footer" class="footer">
       <div class="footer-inner">
         <div class="copyright">&copy; <span itemprop="copyrightYear">2018</span>
-  <span class="with-love" id="animate">
-    <i class="fa fa-"></i>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
   </span>
   <span class="author" itemprop="copyrightHolder">camiler lee</span>
 
   
-
-  
 </div>
 
+
+  <div class="powered-by">由 <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a> 强力驱动</div>
 
 
 
@@ -1118,15 +1099,6 @@ js 文件在DOM文档结构之前，js一直在下载或执行中。
 
 
         
-<div class="busuanzi-count">
-  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
-
-  
-
-  
-</div>
-
-
 
 
 
@@ -1146,10 +1118,7 @@ js 文件在DOM文档结构之前，js一直在下载或执行中。
     
 
     
-	
-    
 
-    
   </div>
 
   
@@ -1168,13 +1137,7 @@ js 文件在DOM文档结构之前，js一直在下载或执行中。
 
 
 
-
-
-
   
-
-
-
 
 
 
@@ -1190,6 +1153,16 @@ js 文件在DOM文档结构之前，js一直在下载或执行中。
   
   
     <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
   
 
   
@@ -1211,26 +1184,49 @@ js 文件在DOM文档结构之前，js一直在下载或执行中。
   
 
 
-  <script type="text/javascript" src="/js/src/utils.js?v=6.5.0"></script>
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
 
-  <script type="text/javascript" src="/js/src/motion.js?v=6.5.0"></script>
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
 
 
-
-  
-  
 
   
-
   
 
 
-  <script type="text/javascript" src="/js/src/bootstrap.js?v=6.5.0"></script>
+  <script type="text/javascript" src="/js/src/affix.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.4"></script>
 
 
 
   
 
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
 
 
   
@@ -1244,330 +1240,34 @@ js 文件在DOM文档结构之前，js一直在下载或执行中。
 
 
 
+  <script src="//cdn1.lncld.net/static/js/3.0.4/av-min.js"></script>
+  <script src="//unpkg.com/valine/dist/Valine.min.js"></script>
   
-
   <script type="text/javascript">
-    // Popup Window;
-    var isfetched = false;
-    var isXml = true;
-    // Search DB path;
-    var search_path = "search.xml";
-    if (search_path.length === 0) {
-      search_path = "search.xml";
-    } else if (/json$/i.test(search_path)) {
-      isXml = false;
-    }
-    var path = "/" + search_path;
-    // monitor main search box;
-
-    var onPopupClose = function (e) {
-      $('.popup').hide();
-      $('#local-search-input').val('');
-      $('.search-result-list').remove();
-      $('#no-result').remove();
-      $(".local-search-pop-overlay").remove();
-      $('body').css('overflow', '');
-    }
-
-    function proceedsearch() {
-      $("body")
-        .append('<div class="search-popup-overlay local-search-pop-overlay"></div>')
-        .css('overflow', 'hidden');
-      $('.search-popup-overlay').click(onPopupClose);
-      $('.popup').toggle();
-      var $localSearchInput = $('#local-search-input');
-      $localSearchInput.attr("autocapitalize", "none");
-      $localSearchInput.attr("autocorrect", "off");
-      $localSearchInput.focus();
-    }
-
-    // search function;
-    var searchFunc = function(path, search_id, content_id) {
-      'use strict';
-
-      // start loading animation
-      $("body")
-        .append('<div class="search-popup-overlay local-search-pop-overlay">' +
-          '<div id="search-loading-icon">' +
-          '<i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>' +
-          '</div>' +
-          '</div>')
-        .css('overflow', 'hidden');
-      $("#search-loading-icon").css('margin', '20% auto 0 auto').css('text-align', 'center');
-
-      
-
-      $.ajax({
-        url: path,
-        dataType: isXml ? "xml" : "json",
-        async: true,
-        success: function(res) {
-          // get the contents from search data
-          isfetched = true;
-          $('.popup').detach().appendTo('.header-inner');
-          var datas = isXml ? $("entry", res).map(function() {
-            return {
-              title: $("title", this).text(),
-              content: $("content",this).text(),
-              url: $("url" , this).text()
-            };
-          }).get() : res;
-          var input = document.getElementById(search_id);
-          var resultContent = document.getElementById(content_id);
-          var inputEventFunction = function() {
-            var searchText = input.value.trim().toLowerCase();
-            var keywords = searchText.split(/[\s\-]+/);
-            if (keywords.length > 1) {
-              keywords.push(searchText);
-            }
-            var resultItems = [];
-            if (searchText.length > 0) {
-              // perform local searching
-              datas.forEach(function(data) {
-                var isMatch = false;
-                var hitCount = 0;
-                var searchTextCount = 0;
-                var title = data.title.trim();
-                var titleInLowerCase = title.toLowerCase();
-                var content = data.content.trim().replace(/<[^>]+>/g,"");
-                
-                var contentInLowerCase = content.toLowerCase();
-                var articleUrl = decodeURIComponent(data.url);
-                var indexOfTitle = [];
-                var indexOfContent = [];
-                // only match articles with not empty titles
-                if(title != '') {
-                  keywords.forEach(function(keyword) {
-                    function getIndexByWord(word, text, caseSensitive) {
-                      var wordLen = word.length;
-                      if (wordLen === 0) {
-                        return [];
-                      }
-                      var startPosition = 0, position = [], index = [];
-                      if (!caseSensitive) {
-                        text = text.toLowerCase();
-                        word = word.toLowerCase();
-                      }
-                      while ((position = text.indexOf(word, startPosition)) > -1) {
-                        index.push({position: position, word: word});
-                        startPosition = position + wordLen;
-                      }
-                      return index;
-                    }
-
-                    indexOfTitle = indexOfTitle.concat(getIndexByWord(keyword, titleInLowerCase, false));
-                    indexOfContent = indexOfContent.concat(getIndexByWord(keyword, contentInLowerCase, false));
-                  });
-                  if (indexOfTitle.length > 0 || indexOfContent.length > 0) {
-                    isMatch = true;
-                    hitCount = indexOfTitle.length + indexOfContent.length;
-                  }
-                }
-
-                // show search results
-
-                if (isMatch) {
-                  // sort index by position of keyword
-
-                  [indexOfTitle, indexOfContent].forEach(function (index) {
-                    index.sort(function (itemLeft, itemRight) {
-                      if (itemRight.position !== itemLeft.position) {
-                        return itemRight.position - itemLeft.position;
-                      } else {
-                        return itemLeft.word.length - itemRight.word.length;
-                      }
-                    });
-                  });
-
-                  // merge hits into slices
-
-                  function mergeIntoSlice(text, start, end, index) {
-                    var item = index[index.length - 1];
-                    var position = item.position;
-                    var word = item.word;
-                    var hits = [];
-                    var searchTextCountInSlice = 0;
-                    while (position + word.length <= end && index.length != 0) {
-                      if (word === searchText) {
-                        searchTextCountInSlice++;
-                      }
-                      hits.push({position: position, length: word.length});
-                      var wordEnd = position + word.length;
-
-                      // move to next position of hit
-
-                      index.pop();
-                      while (index.length != 0) {
-                        item = index[index.length - 1];
-                        position = item.position;
-                        word = item.word;
-                        if (wordEnd > position) {
-                          index.pop();
-                        } else {
-                          break;
-                        }
-                      }
-                    }
-                    searchTextCount += searchTextCountInSlice;
-                    return {
-                      hits: hits,
-                      start: start,
-                      end: end,
-                      searchTextCount: searchTextCountInSlice
-                    };
-                  }
-
-                  var slicesOfTitle = [];
-                  if (indexOfTitle.length != 0) {
-                    slicesOfTitle.push(mergeIntoSlice(title, 0, title.length, indexOfTitle));
-                  }
-
-                  var slicesOfContent = [];
-                  while (indexOfContent.length != 0) {
-                    var item = indexOfContent[indexOfContent.length - 1];
-                    var position = item.position;
-                    var word = item.word;
-                    // cut out 100 characters
-                    var start = position - 20;
-                    var end = position + 80;
-                    if(start < 0){
-                      start = 0;
-                    }
-                    if (end < position + word.length) {
-                      end = position + word.length;
-                    }
-                    if(end > content.length){
-                      end = content.length;
-                    }
-                    slicesOfContent.push(mergeIntoSlice(content, start, end, indexOfContent));
-                  }
-
-                  // sort slices in content by search text's count and hits' count
-
-                  slicesOfContent.sort(function (sliceLeft, sliceRight) {
-                    if (sliceLeft.searchTextCount !== sliceRight.searchTextCount) {
-                      return sliceRight.searchTextCount - sliceLeft.searchTextCount;
-                    } else if (sliceLeft.hits.length !== sliceRight.hits.length) {
-                      return sliceRight.hits.length - sliceLeft.hits.length;
-                    } else {
-                      return sliceLeft.start - sliceRight.start;
-                    }
-                  });
-
-                  // select top N slices in content
-
-                  var upperBound = parseInt('1');
-                  if (upperBound >= 0) {
-                    slicesOfContent = slicesOfContent.slice(0, upperBound);
-                  }
-
-                  // highlight title and content
-
-                  function highlightKeyword(text, slice) {
-                    var result = '';
-                    var prevEnd = slice.start;
-                    slice.hits.forEach(function (hit) {
-                      result += text.substring(prevEnd, hit.position);
-                      var end = hit.position + hit.length;
-                      result += '<b class="search-keyword">' + text.substring(hit.position, end) + '</b>';
-                      prevEnd = end;
-                    });
-                    result += text.substring(prevEnd, slice.end);
-                    return result;
-                  }
-
-                  var resultItem = '';
-
-                  if (slicesOfTitle.length != 0) {
-                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + highlightKeyword(title, slicesOfTitle[0]) + "</a>";
-                  } else {
-                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + title + "</a>";
-                  }
-
-                  slicesOfContent.forEach(function (slice) {
-                    resultItem += "<a href='" + articleUrl + "'>" +
-                      "<p class=\"search-result\">" + highlightKeyword(content, slice) +
-                      "...</p>" + "</a>";
-                  });
-
-                  resultItem += "</li>";
-                  resultItems.push({
-                    item: resultItem,
-                    searchTextCount: searchTextCount,
-                    hitCount: hitCount,
-                    id: resultItems.length
-                  });
-                }
-              })
-            };
-            if (keywords.length === 1 && keywords[0] === "") {
-              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-search fa-5x" /></div>'
-            } else if (resultItems.length === 0) {
-              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-frown-o fa-5x" /></div>'
-            } else {
-              resultItems.sort(function (resultLeft, resultRight) {
-                if (resultLeft.searchTextCount !== resultRight.searchTextCount) {
-                  return resultRight.searchTextCount - resultLeft.searchTextCount;
-                } else if (resultLeft.hitCount !== resultRight.hitCount) {
-                  return resultRight.hitCount - resultLeft.hitCount;
-                } else {
-                  return resultRight.id - resultLeft.id;
-                }
-              });
-              var searchResultList = '<ul class=\"search-result-list\">';
-              resultItems.forEach(function (result) {
-                searchResultList += result.item;
-              })
-              searchResultList += "</ul>";
-              resultContent.innerHTML = searchResultList;
-            }
-          }
-
-          if ('auto' === 'manual') {
-            input.addEventListener('input', inputEventFunction);
-          } else {
-            $('.search-icon').click(inputEventFunction);
-            input.addEventListener('keypress', function (event) {
-              if (event.keyCode === 13) {
-                inputEventFunction();
-              }
-            });
-          }
-
-          // remove loading animation
-          $(".local-search-pop-overlay").remove();
-          $('body').css('overflow', '');
-
-          proceedsearch();
-        }
-      });
-    }
-
-    // handle and trigger popup window;
-    $('.popup-trigger').click(function(e) {
-      e.stopPropagation();
-      if (isfetched === false) {
-        searchFunc(path, 'local-search-input', 'local-search-result');
-      } else {
-        proceedsearch();
-      };
+    var GUEST = ['nick','mail','link'];
+    var guest = 'nick,mail,link';
+    guest = guest.split(',').filter(item=>{
+      return GUEST.indexOf(item)>-1;
     });
-
-    $('.popup-btn-close').click(onPopupClose);
-    $('.popup').click(function(e){
-      e.stopPropagation();
-    });
-    $(document).on('keyup', function (event) {
-      var shouldDismissSearchPopup = event.which === 27 &&
-        $('.search-popup').is(':visible');
-      if (shouldDismissSearchPopup) {
-        onPopupClose();
-      }
+    new Valine({
+        el: '#comments' ,
+        verify: false,
+        notify: false,
+        appId: 't8pkhPWyP7indcApWvQT4tCx-gzGzoHsz',
+        appKey: 'I85dXiy6K2DuDeey1N0xQyA6',
+        placeholder: 'say somthing',
+        avatar:'mm',
+        guest_info:guest,
+        pageSize:'10' || 10,
     });
   </script>
 
 
 
+  
+
+
+
 
 
   
@@ -1577,16 +1277,6 @@ js 文件在DOM文档结构之前，js一直在下载或执行中。
   
 
   
-
-  
-
-  
-  
-
-  
-
-  
-
   
 
   
