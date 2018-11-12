@@ -1428,13 +1428,13 @@ pre .javascript .function {
   position: absolute;
   font-size: 12px;
   left: 20px;
-  top: 5px;
+  top: 0px;
 }
 .posts-collapse .post-comments-count {
   display: none;
 }
 .posts-collapse .post-title {
-  margin-left: 60px;
+  margin-left: 70px;
   font-size: 16px;
   font-weight: normal;
   line-height: inherit;
@@ -1943,7 +1943,7 @@ pre .javascript .function {
   width: 4px;
   height: 4px;
   border-radius: 50%;
-  background: #3cffed;
+  background: #01cb26;
 }
 .links-of-blogroll {
   font-size: 13px;
