@@ -1,0 +1,820 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next gemini use-motion" lang="zh-Hans">
+<head><meta name="generator" content="Hexo 3.8.0">
+  <meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform">
+<meta http-equiv="Cache-Control" content="no-siteapp">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css">
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css">
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css">
+
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/lylogo.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/lylogo16.png?v=5.1.4">
+
+
+
+
+
+
+  <meta name="keywords" content="camiler blog">
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="“如果一个开源包没有一行测试代码，谁敢用？”        一直觉得页面代码无法进行代码测试，就算是代码测试也是内置了浏览器引擎，不然怎么模拟事件点击、网络请求。所以，要写出来，还不如自己在页面上点击来的方便直接。但凭这句话，我怎么样也要看看前端测试代码怎么写？有没有必要写？ 搜罗了一堆关于react测试的文章，选择了jest结合enzyme来实践。 安装install babel相关支持，en">
+<meta property="og:type" content="article">
+<meta property="og:title" content="jest enzyme进行react项目测试实践小结">
+<meta property="og:url" content="http://camiler.github.io/2018/12/19/react-test/index.html">
+<meta property="og:site_name" content="camiler">
+<meta property="og:description" content="“如果一个开源包没有一行测试代码，谁敢用？”        一直觉得页面代码无法进行代码测试，就算是代码测试也是内置了浏览器引擎，不然怎么模拟事件点击、网络请求。所以，要写出来，还不如自己在页面上点击来的方便直接。但凭这句话，我怎么样也要看看前端测试代码怎么写？有没有必要写？ 搜罗了一堆关于react测试的文章，选择了jest结合enzyme来实践。 安装install babel相关支持，en">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:updated_time" content="2018-12-19T10:27:10.561Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="jest enzyme进行react项目测试实践小结">
+<meta name="twitter:description" content="“如果一个开源包没有一行测试代码，谁敢用？”        一直觉得页面代码无法进行代码测试，就算是代码测试也是内置了浏览器引擎，不然怎么模拟事件点击、网络请求。所以，要写出来，还不如自己在页面上点击来的方便直接。但凭这句话，我怎么样也要看看前端测试代码怎么写？有没有必要写？ 搜罗了一堆关于react测试的文章，选择了jest结合enzyme来实践。 安装install babel相关支持，en">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Gemini',
+    version: '5.1.4',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://camiler.github.io/2018/12/19/react-test/">
+
+
+
+
+
+  <title>jest enzyme进行react项目测试实践小结 | camiler</title>
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope="" itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope="" itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">camiler</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <h1 class="site-subtitle" itemprop="description"></h1>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br>
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br>
+            
+            关于
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th-large"></i> <br>
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br>
+            
+            归档
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope="" itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://camiler.github.io/2018/12/19/react-test/">
+
+    <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="camiler lee">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope="" itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="camiler">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h2 class="post-title" itemprop="name headline">jest enzyme进行react项目测试实践小结</h2>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-12-19T19:52:28+08:00">
+                2018-12-19
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope="" itemtype="http://schema.org/Thing">
+                  <a href="/categories/FE/" itemprop="url" rel="index">
+                    <span itemprop="name">FE</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/2018/12/19/react-test/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count valine-comment-count" data-xid="/2018/12/19/react-test/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <blockquote>
+<p>“如果一个开源包没有一行测试代码，谁敢用？”      </p>
+</blockquote>
+<p>一直觉得页面代码无法进行代码测试，就算是代码测试也是内置了浏览器引擎，不然怎么模拟事件点击、网络请求。所以，要写出来，还不如自己在页面上点击来的方便直接。但凭这句话，我怎么样也要看看前端测试代码怎么写？有没有必要写？</p>
+<p>搜罗了一堆关于react测试的文章，选择了jest结合enzyme来实践。</p>
+<h2 id="安装"><a href="#安装" class="headerlink" title="安装"></a>安装</h2><p>install babel相关支持，enzyme react版本支持<br><code>npm install --save-dev babel-core@^7.0.0-bridge.0 @babel/core babel-jest enzyme enzyme-adapter-react-16 jest jest-cli react-test-renderer</code></p>
+<h2 id="配置"><a href="#配置" class="headerlink" title="配置"></a>配置</h2><p>项目中需要Babel进行编译，所以简单的jest默认配置无法正常运行，需要为jest设置一些特殊配置。<br>.jest.js文件<br><figure class="highlight coq"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line">module.exports = &#123;</span><br><span class="line">  verbose: true,</span><br><span class="line">  setupFiles: ['./test/setup.js'],</span><br><span class="line">  testURL: 'http://localhost:<span class="number">3000</span>', // 测试环境URL</span><br><span class="line">  moduleFileExtensions: ['js', 'jsx'], // 单元测试文件检测后缀名</span><br><span class="line">  moduleDirectories: [<span class="string">"node_modules"</span>],</span><br><span class="line">  transformIgnorePatterns: [<span class="string">"/node_modules/"</span>],</span><br><span class="line">  coveragePathIgnorePatterns: [<span class="string">"/node_modules/"</span>],</span><br><span class="line">  modulePathIgnorePatterns: [<span class="string">"/node_modules/"</span>],</span><br><span class="line">  unmockedModulePathPatterns: [</span><br><span class="line">    <span class="string">"&lt;rootDir&gt;/node_modules/react/"</span>,</span><br><span class="line">    <span class="string">"&lt;rootDir&gt;/node_modules/react-dom/"</span></span><br><span class="line">  ],</span><br><span class="line">  collectCoverage: true,</span><br><span class="line">  moduleNameMapper: &#123; // mock模块</span><br><span class="line">    '\\.(jpg|<span class="type">jpeg</span>|<span class="type">png</span>|<span class="type">gif</span>|<span class="type">eot</span>|<span class="type">otf</span>|<span class="type">webp</span>|<span class="type">svg</span>|<span class="type">ttf</span>|<span class="type">woff</span>|<span class="type">woff2</span>|<span class="type">mp4</span>|<span class="type">webm</span>|<span class="type">wav</span>|<span class="type">mp3</span>|<span class="type">m4a</span>|<span class="type">aac</span>|<span class="type">oga</span>)$': '&lt;rootDir&gt;/test/__mocks__/fileMock.js',</span><br><span class="line">    '\\.(css|<span class="type">less</span>)$': 'identity-obj-proxy' //告诉jest将webpack引用的css模拟导入，这样就可以按className原样去查找</span><br><span class="line">  &#125;,</span><br><span class="line">  transform: &#123;</span><br><span class="line">    <span class="string">"^.+\\.jsx?$"</span>: <span class="string">"&lt;rootDir&gt;/node_modules/babel-jest"</span>,</span><br><span class="line">    <span class="string">"^.+\\.js?$"</span>: <span class="string">"&lt;rootDir&gt;/node_modules/babel-jest"</span>  //安装babel-jest</span><br><span class="line">  &#125;,</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure></p>
+<p>.babelrc<br><figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">  <span class="attr">"presets"</span>: [</span><br><span class="line">    <span class="string">"@babel/preset-env"</span>,</span><br><span class="line">    <span class="string">"@babel/preset-react"</span></span><br><span class="line">  ]</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>package.json scripts增加 <code>&quot;test&quot;: &quot;jest --config .jest.js&quot;</code></p>
+<p>新建test文件夹，创建componentXX.test.js就可以开始编写测试用例了。</p>
+<h2 id="如何编写？"><a href="#如何编写？" class="headerlink" title="如何编写？"></a>如何编写？</h2><h3 id="enzyme-v3-渲染API"><a href="#enzyme-v3-渲染API" class="headerlink" title="enzyme v3 渲染API"></a>enzyme v3 渲染API</h3><h4 id="shallow"><a href="#shallow" class="headerlink" title="shallow"></a><code>shallow</code></h4><p>浅层比较，state和props决定渲染结果。不会影响子组件，所以这类API通常用在最小单元组件或状态组件的测试，简单判断渲染结构、内部state是否和预想一致。可以随时set props，state, context改变渲染结构进行断言。<br>v3版本中，shallow会调用react的<code>componentDidMount</code>和<code>componentDidUpdate</code>周期，所以可以模拟事件，查找节点，获取选择器进行结果的查询。</p>
+<h4 id="mount"><a href="#mount" class="headerlink" title="mount"></a><code>mount</code></h4><p>完整的DOM渲染，深层渲染。可以用于测试有DOM API的交互，或包裹在高阶组件中的组件，包含子组件的组件。完整的DOM渲染至少需要运行在一个像浏览器的环境中，如果不是浏览器环境，推荐使用<a href="https://github.com/tmpvar/jsdom" target="_blank" rel="noopener">jsdom</a>模拟。<br>与其他两个API不同的是，mount实际上会把组件挂载到DOM上，就是说mount中，如果用的是相同的DOM，它们会相互影响。必要时，使用<code>unmount()</code>清理。</p>
+<h4 id="render"><a href="#render" class="headerlink" title="render"></a><code>render</code></h4><p>用于将react组件渲染为静态HTML，对HTML结构进行分析。使用<code>cheerio</code>解析HTML。所以一般不用该方法。有可能的用法之一是：检测react中通过dangerouslySetInnerHTML动态生成的HTML。</p>
+<h3 id="jest"><a href="#jest" class="headerlink" title="jest"></a>jest</h3><p>惯用格式：it只是作为test的别名，两者一样。官方使用test。<br><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">describe(<span class="string">'des'</span>, () =&gt; &#123;</span><br><span class="line">  it(<span class="string">'des'</span>, () =&gt; &#123;</span><br><span class="line">    expect().toEqual();</span><br><span class="line">  &#125;);</span><br><span class="line">  test(<span class="string">'des'</span>, () =&gt; &#123;</span><br><span class="line">    expect().toBe();</span><br><span class="line">  &#125;);</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure></p>
+<h3 id="如何写测试用例"><a href="#如何写测试用例" class="headerlink" title="如何写测试用例"></a>如何写测试用例</h3><p>测试最大的特点就是覆盖足够的逻辑点及边界。前端测试也是一样。   </p>
+<p>针对react应用来说，内部state的变化是否按照预期那样在流转？react周期是不是在对的时间进行了调用，比如：props变化后，是否确实调用了componentWillReceiveProps了呢？当然周期的调用也可以通过state的流向侧面反应出来。模拟事件后，事件里的逻辑通过哪些现象可以得到印证？   </p>
+<p>另外，我们知道，组件最终渲染结果是根据props和state决定的，所以如何确定相同的props，state确定得到了同一个DOM，而不同的props得到的DOM版本是不一样的？这些都可以通过enzyme的方法得到解决。</p>
+<p>至于解决方法具体查看<a href="https://airbnb.io/enzyme/docs/api/" target="_blank" rel="noopener">enzyme api文档</a>，文档很简单，也有简单示例，先大致浏览一遍是干什么的，用时才有印象。</p>
+<p>jest的断言方法也一样。另外jest提供了常用的<a href="https://jestjs.io/docs/en/mock-functions" target="_blank" rel="noopener">function</a>、<a href="https://jestjs.io/docs/en/es6-class-mocks" target="_blank" rel="noopener">es6 class</a>,  <a href="https://jestjs.io/docs/en/timer-mocks" target="_blank" rel="noopener">timer</a> mock功能，也可以<a href="https://jestjs.io/docs/en/manual-mocks" target="_blank" rel="noopener">人为mock</a>，通常用来mock数据。</p>
+<h2 id="实践之后"><a href="#实践之后" class="headerlink" title="实践之后"></a>实践之后</h2><p>前期配置调试了很久，babel版本问题，import无法识别等等，前端配置越来越复杂，想如后端那样集构建测试一体确实不容易。前端真的要这样复杂么？毕竟本质来说就是运行在浏览器上的特定结构。当然这个问题答案肯定是既有好处也有坏处，我也总是徘徊不定。配置这些真的让人头疼，但框架的运用确实提高了效率。</p>
+<p>回归正题，在编写测试代码时，我会问自己这个组件到底是做什么，要实现什么功能，会先梳理一遍内部逻辑才能开始想从哪里写。所以编写测试用例能够加深对代码的理解。测试代码运行后，会发现和预期不一致，再重新看组件逻辑，会发现有些地方处理有问题，而这个问题只不过业务没有覆盖到或者说没有用到，而作为组件需要提供这样一个选项，但这个值业务没有完全覆盖。这些都是做测试的优势。</p>
+<p>但初次写测试代码，尤其在项目已经完善后期，编写测试用例是个大工程。当然只要能完整的完成一个项目的所有测试用例，在业务模式一致，框架相同的条件下，后面的项目都可以套用了。</p>
+<p>另外，我感受到的周围前端确实没有完善测试用例的，这也跟国内开发环境有关。产品快速迭代，需求不断更改，开发时间都不够，哪里有时间关注前端代码测试，只要业务测试后满足需求就可以了。</p>
+<p>而作为工程本身而言，完整的测试覆盖应该是一种责任和义务。</p>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+      <div>
+        <div style="padding: 10px 0; margin: 20px auto; width: 90%; text-align: center;">
+  <div>亲，如果觉得还行，鼓励一下！</div>
+  <button id="rewardButton" disable="enable" onclick="var qr = document.getElementById('QR'); if (qr.style.display === 'none') {qr.style.display='block';} else {qr.style.display='none'}">
+    <span>打赏</span>
+  </button>
+  <div id="QR" style="display: none;">
+
+    
+      <div id="wechat" style="display: inline-block">
+        <img id="wechat_qr" src="/images/wechatpay.jpeg" alt="camiler lee 微信支付">
+        <p>微信支付</p>
+      </div>
+    
+
+    
+
+    
+
+  </div>
+</div>
+
+      </div>
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2018/10/11/redux-note/" rel="next" title="redux理解-日常小记">
+                <i class="fa fa-chevron-left"></i> redux理解-日常小记
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+    <div class="comments" id="comments">
+    </div>
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image" src="/images/avatar.jpg" alt="camiler lee">
+            
+              <p class="site-author-name" itemprop="name">camiler lee</p>
+              <p class="site-description motion-element" itemprop="description"></p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">15</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                
+                  <span class="site-state-item-count">2</span>
+                  <span class="site-state-item-name">分类</span>
+                
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                
+                  <span class="site-state-item-count">8</span>
+                  <span class="site-state-item-name">标签</span>
+                
+              </div>
+            
+
+          </nav>
+
+          
+
+          
+            <div class="links-of-author motion-element">
+                
+                  <span class="links-of-author-item">
+                    <a href="https://github.com/camiler" target="_blank" title="GitHub">
+                      
+                        <i class="fa fa-fw fa-github"></i>GitHub</a>
+                  </span>
+                
+                  <span class="links-of-author-item">
+                    <a href="mailto:liyue_suc@163.com" target="_blank" title="E-Mail">
+                      
+                        <i class="fa fa-fw fa-globe"></i>E-Mail</a>
+                  </span>
+                
+                  <span class="links-of-author-item">
+                    <a href="https://www.zcfy.cc/@camiler/article" target="_blank" title="翻译">
+                      
+                        <i class="fa fa-fw fa-globe"></i>翻译</a>
+                  </span>
+                
+            </div>
+          
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#安装"><span class="nav-number">1.</span> <span class="nav-text">安装</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#配置"><span class="nav-number">2.</span> <span class="nav-text">配置</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#如何编写？"><span class="nav-number">3.</span> <span class="nav-text">如何编写？</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#enzyme-v3-渲染API"><span class="nav-number">3.1.</span> <span class="nav-text">enzyme v3 渲染API</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#shallow"><span class="nav-number">3.1.1.</span> <span class="nav-text">shallow</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#mount"><span class="nav-number">3.1.2.</span> <span class="nav-text">mount</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#render"><span class="nav-number">3.1.3.</span> <span class="nav-text">render</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#jest"><span class="nav-number">3.2.</span> <span class="nav-text">jest</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#如何写测试用例"><span class="nav-number">3.3.</span> <span class="nav-text">如何写测试用例</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#实践之后"><span class="nav-number">4.</span> <span class="nav-text">实践之后</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2018</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">camiler lee</span>
+
+  
+</div>
+
+
+  <div class="powered-by">由 <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a> 强力驱动</div>
+
+
+
+
+
+
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.4"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+  <script src="//cdn1.lncld.net/static/js/3.0.4/av-min.js"></script>
+  <script src="//unpkg.com/valine/dist/Valine.min.js"></script>
+  
+  <script type="text/javascript">
+    var GUEST = ['nick','mail','link'];
+    var guest = 'nick,mail,link';
+    guest = guest.split(',').filter(item=>{
+      return GUEST.indexOf(item)>-1;
+    });
+    new Valine({
+        el: '#comments' ,
+        verify: false,
+        notify: false,
+        appId: 't8pkhPWyP7indcApWvQT4tCx-gzGzoHsz',
+        appKey: 'I85dXiy6K2DuDeey1N0xQyA6',
+        placeholder: 'say somthing',
+        avatar:'mm',
+        guest_info:guest,
+        pageSize:'10' || 10,
+    });
+  </script>
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>

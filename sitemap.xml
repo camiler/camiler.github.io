@@ -2,6 +2,13 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   
   <url>
+    <loc>http://camiler.github.io/2018/12/19/react-test/</loc>
+    
+    <lastmod>2018-12-19T10:27:10.561Z</lastmod>
+    
+  </url>
+  
+  <url>
     <loc>http://camiler.github.io/2018/10/11/redux-note/</loc>
     
     <lastmod>2018-11-09T09:53:12.603Z</lastmod>
